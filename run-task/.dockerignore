@@ -1,0 +1,5 @@
+# Ignore built assets
+lib
+
+# Ignore this machine's node_modules
+node_modules

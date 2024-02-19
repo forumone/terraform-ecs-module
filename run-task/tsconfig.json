@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "NodeNext",
+
+    "isolatedModules": true,
+    "importsNotUsedAsValues": "remove",
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "outDir": "lib"
+  },
+
+  "include": ["src/**/*"],
+}
