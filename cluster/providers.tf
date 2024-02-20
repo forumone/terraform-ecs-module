@@ -5,7 +5,10 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = "~> 5.31"
-      configuration_aliases = [aws.infrastructure]
+      configuration_aliases = [
+        aws.infrastructure,
+        aws.main
+     ]
     }
 
     tls = {
