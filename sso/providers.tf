@@ -6,7 +6,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.31"
 
-      configuration_aliases = [aws.target]
+      configuration_aliases = [
+        aws.target,
+        aws.main
+      ]
     }
   }
 }
