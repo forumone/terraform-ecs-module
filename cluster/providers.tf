@@ -6,8 +6,7 @@ terraform {
       source                = "hashicorp/aws"
       version               = "~> 5.31"
       configuration_aliases = [
-        aws.infrastructure,
-        aws.main
+        aws.infrastructure
      ]
     }
 
