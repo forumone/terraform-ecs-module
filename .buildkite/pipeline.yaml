@@ -1,0 +1,219 @@
+env:
+  TARGET_ACCOUNT: "569455045079"
+  ECR_NAMESPACE: 569455045079.dkr.ecr.us-east-2.amazonaws.com/forumone-ecs
+
+definitions:
+  terraform: &terraform hashicorp/terraform:1.7.3
+  tflint: &tflint ghcr.io/terraform-linters/tflint-bundle
+  nodejs: &nodejs node:18
+
+  ecr: &ecr
+    ecr#v2.7.0:
+      login: true
+      account-ids: "$TARGET_ACCOUNT"
+      region: us-east-2
+      no-include-email: true
+
+  # Directories for Terraform modules
+  modules: &modules
+    - .
+    - cluster
+    - cluster/application
+    - cluster/traefik
+    - sso
+    - tf_mysql_aurora
+    - tf_postgresql_aurora
+
+steps:
+  - group: ":terraform: Formatting"
+    steps:
+      - label: "Format: {{matrix}}"
+        matrix: *modules
+
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
+        concurrency: 4
+        concurrency_method: eager
+
+        # Buildkite does not interpolate {{matrix}} inside of plugins, so pass
+        # this variable into the container.
+        env:
+          MODULE_DIR: "{{matrix}}"
+
+        plugins:
+          - docker#v5.10.0:
+              image: *terraform
+              environment: [MODULE_DIR]
+              entrypoint: /bin/sh
+              command:
+                - -ec
+                - |
+                  cd $$MODULE_DIR
+                  terraform fmt -diff -check
+
+  - group: ":terraform: TFLint"
+    steps:
+      - label: "Lint: {{matrix}}"
+        matrix: *modules
+
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
+        concurrency: 4
+        concurrency_method: eager
+
+        env:
+          MODULE_DIR: "{{matrix}}"
+
+        plugins:
+          - docker#v5.10.0:
+              image: *tflint
+              environment: [MODULE_DIR]
+              entrypoint: /bin/sh
+              command:
+                - -ec
+                - |
+                  cd $$MODULE_DIR
+                  tflint
+
+  - group: ":terraform: terraform-docs"
+    steps:
+      - label: "Documentation: {{matrix}}"
+        matrix: *modules
+
+        command: scripts/check-docs.sh "{{matrix}}"
+
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
+        concurrency: 4
+        concurrency_method: eager
+
+        env:
+          MODULE_DIR: "{{matrix}}"
+
+  # Do a test build of the Terraform images (this runs `terraform validate`, among other things)
+  - group: ":docker: Terraform Aurora images"
+    steps:
+      - label: ":docker: :build: {{matrix}}"
+
+        matrix: [tf_mysql_aurora, tf_postgresql_aurora]
+
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+        concurrency: 3
+
+        commands:
+          - docker build {{matrix}}
+
+  # Run type checking against the RunTask helper
+  - label: ":typescript: Typecheck run-task helper"
+    branches:
+      - "!main"
+
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
+    concurrency: 4
+    concurrency_method: eager
+
+    plugins:
+      - docker#v5.10.0:
+          image: *nodejs
+          entrypoint: /bin/bash
+          command:
+            - -ec
+            - |
+              cd run-task
+              npm ci
+              npm run check
+
+  - group: "Check backups"
+    steps:
+      # Do a test build of the backups container
+      - label: ":docker: Test build container"
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+        concurrency: 3
+
+        commands: docker build backups
+
+      - label: ":bash: Shellcheck scripts"
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
+        concurrency: 4
+        concurrency_method: eager
+
+        plugins:
+          - shellcheck#v1.3.0:
+              files: backups/*.sh
+
+      - label: ":bash: shfmt"
+        concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
+        concurrency: 4
+        concurrency_method: eager
+
+        plugins:
+          - docker#v5.10.0:
+              image: mvdan/shfmt
+              command: [-i, '2', -l, -d, backups]
+
+  - label: ":docker: Build MySQL Terraform"
+    agents:
+      queue: infrastructure
+
+    # Only run on the main branch
+    branches:
+      - main
+
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+    concurrency: 2
+
+    commands:
+      - docker build tf_mysql_aurora --tag ${ECR_NAMESPACE}/terraform:mysql
+      - docker push ${ECR_NAMESPACE}/terraform:mysql
+
+    plugins:
+      - *ecr
+
+  - label: ":docker: Build PostgreSQL Terraform"
+    agents:
+      queue: infrastructure
+
+    branches:
+      - main
+
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+    concurrency: 2
+
+    commands:
+      - docker build tf_postgresql_aurora --tag ${ECR_NAMESPACE}/terraform:postgresql
+      - docker push ${ECR_NAMESPACE}/terraform:postgresql
+
+    plugins:
+      - *ecr
+
+  - label: ":docker: Build RunTask helper"
+    agents:
+      queue: infrastructure
+
+    branches:
+      - main
+
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+    concurrency: 2
+
+    commands:
+      - docker build run-task --tag ${ECR_NAMESPACE}/run-task:latest
+      - docker push ${ECR_NAMESPACE}/run-task:latest
+
+    plugins:
+      - *ecr
+
+
+  - label: ":docker: Build backups container"
+    agents:
+      queue: infrastructure
+
+    branches:
+      - main
+
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+    concurrency: 2
+
+    commands:
+      - docker build backups --tag ${ECR_NAMESPACE}/backups:latest
+      - docker push ${ECR_NAMESPACE}/backups:latest
+
+    plugins:
+      - *ecr
