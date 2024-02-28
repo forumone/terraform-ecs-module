@@ -16,7 +16,6 @@ definitions:
 
   # Directories for Terraform modules
   modules: &modules
-    - .
     - cluster
     - cluster/application
     - cluster/traefik
