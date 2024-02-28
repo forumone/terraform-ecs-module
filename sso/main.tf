@@ -1,5 +1,7 @@
 # Load the list of instance identity stores
-data "aws_ssoadmin_instances" "this" {}
+data "aws_ssoadmin_instances" "this" {
+  provider = aws.main
+}
 
 # Find the Okta group matching the given name
 data "aws_identitystore_group" "this" {
@@ -11,6 +13,7 @@ data "aws_identitystore_group" "this" {
       attribute_value = var.okta_group_name
     }
   }
+  provider = aws.main
 }
 
 # Register the permission set
@@ -20,6 +23,7 @@ resource "aws_ssoadmin_permission_set" "this" {
   name             = var.permission_set_name
   description      = var.permission_set_description
   session_duration = var.session_duration
+  provider         = aws.main
 }
 
 resource "aws_ssoadmin_managed_policy_attachment" "ecr_read_write" {
@@ -27,6 +31,7 @@ resource "aws_ssoadmin_managed_policy_attachment" "ecr_read_write" {
 
   permission_set_arn = aws_ssoadmin_permission_set.this.arn
   managed_policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
+  provider           = aws.main
 }
 
 resource "aws_ssoadmin_managed_policy_attachment" "cloudwatch_read_only" {
@@ -34,6 +39,7 @@ resource "aws_ssoadmin_managed_policy_attachment" "cloudwatch_read_only" {
 
   permission_set_arn = aws_ssoadmin_permission_set.this.arn
   managed_policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsReadOnlyAccess"
+  provider           = aws.main
 }
 
 # Attach AWS-managed policies to the permission set
@@ -44,6 +50,7 @@ resource "aws_ssoadmin_managed_policy_attachment" "this" {
   permission_set_arn = aws_ssoadmin_permission_set.this.arn
 
   managed_policy_arn = each.key
+  provider           = aws.main
 }
 
 resource "aws_ssoadmin_permission_set_inline_policy" "this" {
@@ -53,6 +60,7 @@ resource "aws_ssoadmin_permission_set_inline_policy" "this" {
   permission_set_arn = aws_ssoadmin_permission_set.this.arn
 
   inline_policy = var.inline_policy
+  provider      = aws.main
 }
 
 # Attach custom policies to the permission set
@@ -66,6 +74,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "this" {
     name = each.key
     path = "/"
   }
+  provider = aws.main
 }
 
 # Attach our policies to the permission set
@@ -79,6 +88,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "s3" {
     name = aws_iam_policy.s3_access.name
     path = aws_iam_policy.s3_access.path
   }
+  provider = aws.main
 }
 
 # Developers will always have some level of read-only access to ECS
@@ -90,6 +100,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "ecs" {
     name = aws_iam_policy.ecs_access.name
     path = aws_iam_policy.ecs_access.path
   }
+  provider = aws.main
 }
 
 # In order to run tasks in the cluster(s), developers will need to pass
@@ -102,6 +113,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "iam" {
     name = aws_iam_policy.ecs_pass_role.name
     path = aws_iam_policy.ecs_pass_role.path
   }
+  provider = aws.main
 }
 
 # Finally, assign the permission set to this account
@@ -115,4 +127,5 @@ resource "aws_ssoadmin_account_assignment" "this" {
 
   target_id   = var.target_account
   target_type = "AWS_ACCOUNT"
+  provider    = aws.main
 }
