@@ -1,6 +1,6 @@
 env:
   TARGET_ACCOUNT: "569455045079"
-  ECR_NAMESPACE: public.ecr.aws/forumone/
+  ECR_NAMESPACE: public.ecr.aws/forumone
 
 definitions:
   terraform: &terraform hashicorp/terraform:1.7.3
