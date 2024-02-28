@@ -1,6 +1,6 @@
 env:
   TARGET_ACCOUNT: "569455045079"
-  ECR_NAMESPACE: 569455045079.dkr.ecr.us-east-2.amazonaws.com/forumone-ecs
+  ECR_NAMESPACE: public.ecr.aws/forumone/
 
 definitions:
   terraform: &terraform hashicorp/terraform:1.7.3
@@ -159,8 +159,8 @@ steps:
     concurrency: 2
 
     commands:
-      - docker build tf_mysql_aurora --tag ${ECR_NAMESPACE}/terraform:mysql
-      - docker push ${ECR_NAMESPACE}/terraform:mysql
+      - docker build tf_mysql_aurora --tag ${ECR_NAMESPACE}/ecs-terraform-mysql:latest
+      - docker push ${ECR_NAMESPACE}/ecs-terraform-mysql:latest
 
     plugins:
       - *ecr
@@ -176,8 +176,8 @@ steps:
     concurrency: 2
 
     commands:
-      - docker build tf_postgresql_aurora --tag ${ECR_NAMESPACE}/terraform:postgresql
-      - docker push ${ECR_NAMESPACE}/terraform:postgresql
+      - docker build tf_postgresql_aurora --tag ${ECR_NAMESPACE}/ecs-terraform-postgresql:latest
+      - docker push ${ECR_NAMESPACE}/ecs-terraform-postgresql:latest
 
     plugins:
       - *ecr
@@ -193,8 +193,8 @@ steps:
     concurrency: 2
 
     commands:
-      - docker build run-task --tag ${ECR_NAMESPACE}/run-task:latest
-      - docker push ${ECR_NAMESPACE}/run-task:latest
+      - docker build run-task --tag ${ECR_NAMESPACE}/ecs-run-task:latest
+      - docker push ${ECR_NAMESPACE}/ecs-run-task:latest
 
     plugins:
       - *ecr
@@ -211,8 +211,8 @@ steps:
     concurrency: 2
 
     commands:
-      - docker build backups --tag ${ECR_NAMESPACE}/backups:latest
-      - docker push ${ECR_NAMESPACE}/backups:latest
+      - docker build backups --tag ${ECR_NAMESPACE}/ecs-backups:latest
+      - docker push ${ECR_NAMESPACE}/ecs-backups:latest
 
     plugins:
       - *ecr
