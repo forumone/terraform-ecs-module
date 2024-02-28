@@ -1,5 +1,4 @@
 env:
-  TARGET_ACCOUNT: "569455045079"
   ECR_NAMESPACE: public.ecr.aws/forumone
 
 definitions:
@@ -14,6 +13,8 @@ definitions:
         - "public.ecr.aws"
       region: us-east-2
       no-include-email: true
+      assume_role:
+        role_arn: arn:aws:iam::569455045079:role/BuildkiteECRPublic
 
   # Directories for Terraform modules
   modules: &modules
@@ -25,10 +26,10 @@ definitions:
     - tf_postgresql_aurora
 
   queues:
-      # Docker-based tasks should run in the Docker queue.
-      docker-agents: &docker-agents
-        agents:
-          queue: "docker-builders"
+    # Docker-based tasks should run in the Docker queue.
+    docker-agents: &docker-agents
+      agents:
+        queue: "docker-builders"
 
 steps:
   - group: ":terraform: Formatting"
