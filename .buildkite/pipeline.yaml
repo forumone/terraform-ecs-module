@@ -1,4 +1,5 @@
 env:
+  TARGET_ACCOUNT: "569455045079"
   ECR_NAMESPACE: public.ecr.aws/forumone
 
 definitions:
@@ -9,6 +10,9 @@ definitions:
   ecr: &ecr
     ecr#v2.7.0:
       login: true
+      account-ids: 
+        - "$TARGET_ACCOUNT"
+        - "public.ecr.aws"
       region: us-east-2
       no-include-email: true
 
