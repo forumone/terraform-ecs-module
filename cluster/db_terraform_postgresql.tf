@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "terraform_postgresql_database_exec" {
     {
       name = "terraform"
       # This will need to be updated with the correct repo
-      image = "${aws_ecr_repository.terraform_database.repository_url}:postgresql"
+      image = "public.ecr.aws/forumone/ecs-terraform-postgresql:latest"
 
       environment = [
         # See terraform/database/variables.tf for more on these
