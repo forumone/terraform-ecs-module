@@ -8,12 +8,11 @@ data "aws_iam_policy_document" "ecs_pass_role" {
 
     resources = var.task_role_arns
   }
+  provider = aws.main
 }
 
 resource "aws_iam_policy" "ecs_pass_role" {
   name_prefix = "SSO-pass-role-"
 
   policy = data.aws_iam_policy_document.ecs_pass_role.json
-
-  provider = aws.target
 }

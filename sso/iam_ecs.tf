@@ -42,14 +42,10 @@ data "aws_iam_policy_document" "ecs_access" {
       values   = var.ecs_cluster_arns
     }
   }
-
-  provider = aws.target
 }
 
 resource "aws_iam_policy" "ecs_access" {
   name_prefix = "SSO-cluster-access-"
 
   policy = data.aws_iam_policy_document.ecs_access.json
-
-  provider = aws.target
 }
