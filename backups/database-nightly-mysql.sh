@@ -72,7 +72,7 @@ for database in "${databases[@]}"; do
   fi
 
   echo "[INFO] Preparing $remote_dir"
-  if ! ssh "$SSH_USERNAME@$SSH_REMOTE" mkdir -p "$remote_dir"; then
+  if ! ssh "$SSH_USERNAME@$SSH_REMOTE" "mkdir -p $remote_dir"; then
     ok=
     continue
   fi
