@@ -10,7 +10,7 @@ definitions:
   ecr: &ecr
     ecr#v2.7.0:
       login: true
-      account-ids: "$TARGET_ACCOUNT"
+      account-ids: public.ecr.aws
       region: us-east-2
       no-include-email: true
 
