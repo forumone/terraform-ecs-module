@@ -11,7 +11,6 @@ definitions:
     ecr#v2.7.0:
       login: true
       account-ids: 
-        - "$TARGET_ACCOUNT"
         - "public.ecr.aws"
       region: us-east-2
       no-include-email: true
