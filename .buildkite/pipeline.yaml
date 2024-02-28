@@ -155,7 +155,7 @@ steps:
               command: [-i, '2', -l, -d, backups]
 
   - label: ":docker: Build MySQL Terraform"
-
+    <<: *docker-agents
 
     # Only run on the main branch
     branches:
@@ -188,7 +188,7 @@ steps:
       - *ecr
 
   - label: ":docker: Build RunTask helper"
-
+    <<: *docker-agents
 
     branches:
       - main
@@ -205,7 +205,7 @@ steps:
 
 
   - label: ":docker: Build backups container"
-
+    <<: *docker-agents
 
     branches:
       - main
