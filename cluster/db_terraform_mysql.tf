@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "terraform_mysql_database_exec" {
     {
       name = "terraform"
       # This will need to be updated with the correct repo
-      image = "${aws_ecr_repository.terraform_database.repository_url}:mysql"
+      image = "public.ecr.aws/forumone/ecs-terraform-mysql:latest"
 
       environment = [
         # See terraform/database/variables.tf for more on these

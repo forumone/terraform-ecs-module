@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "backup_database_mysql" {
   container_definitions = jsonencode([
     {
       name  = "backup"
-      image = "${aws_ecr_repository.backups.repository_url}:latest"
+      image = "public.ecr.aws/forumone/ecs-backups:latest"
 
       essential = true
 
