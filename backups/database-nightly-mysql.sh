@@ -55,7 +55,7 @@ for database in "${databases[@]}"; do
   remote_path="$CLUSTER_NAME/databases/$dump_name"
 
   # Needed to run mkdir -p on the remote end
-  remote_dir="$(dirname "$dump_name")"
+  remote_dir="$(dirname "$remote_path")"
 
   echo "[INFO] Performing MySQL dump of $database"
   if ! mysqldump "${mysql_args[@]}" --single-transaction --opt "$database" | gzip >"$local_path"; then
@@ -72,7 +72,7 @@ for database in "${databases[@]}"; do
   fi
 
   echo "[INFO] Preparing $remote_dir"
-  if ! ssh "$SSH_USERNAME@$SSH_REMOTE" "mkdir -p \$remote_dir"; then
+  if ! ssh "$SSH_USERNAME@$SSH_REMOTE" mkdir -p "$remote_dir"; then
     ok=
     continue
   fi
