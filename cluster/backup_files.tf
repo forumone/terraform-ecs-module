@@ -3,7 +3,7 @@ locals {
   backup_file_systems = [
     for application in var.applications :
     application.name
-    if length(coalesce(application.accessPoints, [])) != 0
+    if contains(keys(application), "accessPoints")
   ]
 }
 
