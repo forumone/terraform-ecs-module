@@ -237,12 +237,14 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_availability_zones"></a> [availability\_zones](#output\_availability\_zones) | List of availability zones |
 | <a name="output_buildkite_builder"></a> [buildkite\_builder](#output\_buildkite\_builder) | ARN of the Docker builder role for Buildkite to assume |
 | <a name="output_buildkite_deployer"></a> [buildkite\_deployer](#output\_buildkite\_deployer) | ARN of the Terraform deployment role for Buildkite to assume |
 | <a name="output_cluster_arn"></a> [cluster\_arn](#output\_cluster\_arn) | ARN of the ECS cluster |
 | <a name="output_cluster_roles"></a> [cluster\_roles](#output\_cluster\_roles) | List of role ARNs associated with cluster tasks |
 | <a name="output_iam_role_arns"></a> [iam\_role\_arns](#output\_iam\_role\_arns) | Map of custom IAM role ARNs created for applications |
 | <a name="output_iam_role_names"></a> [iam\_role\_names](#output\_iam\_role\_names) | Map of custom IAM role names created for applications |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | List of IDs of public subnets |
 | <a name="output_s3_backups"></a> [s3\_backups](#output\_s3\_backups) | ARN of the S3 backups bucket |
 | <a name="output_s3_bucket_arns"></a> [s3\_bucket\_arns](#output\_s3\_bucket\_arns) | Map of custom S3 bucket ARNs created for applications |
 | <a name="output_s3_bucket_names"></a> [s3\_bucket\_names](#output\_s3\_bucket\_names) | Map of custom S3 bucket names created for applications |
@@ -250,4 +252,5 @@
 | <a name="output_s3_env_files"></a> [s3\_env\_files](#output\_s3\_env\_files) | ARN of the S3 environment files bucket |
 | <a name="output_security_groups"></a> [security\_groups](#output\_security\_groups) | Map of custom security groups created for applications |
 | <a name="output_ssm_read_policy"></a> [ssm\_read\_policy](#output\_ssm\_read\_policy) | Name of the Systems Manager read-only policy |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the VPC |
 <!-- END_TF_DOCS -->
