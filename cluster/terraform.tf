@@ -30,7 +30,7 @@ module "s3_tfstate" {
 }
 
 resource "aws_dynamodb_table" "terraform_locks" {
-  name = "TerraformLocks"
+  name = "${var.name}-TerraformLocks"
 
   hash_key     = "LockID"
   billing_mode = "PAY_PER_REQUEST"
