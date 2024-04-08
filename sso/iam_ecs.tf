@@ -24,7 +24,8 @@ data "aws_iam_policy_document" "ecs_access" {
       "ecs:DescribeClusters",
       "ecs:DescribeServices",
       "ecs:DescribeTaskDefinition",
-      "ecs:DescribeTasks"
+      "ecs:DescribeTasks",
+      "cloudwatch:GetMetricData"
     ]
 
     resources = ["*"]
