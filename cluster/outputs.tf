@@ -114,3 +114,22 @@ output "availability_zones" {
   description = "List of availability zones"
   value       = module.vpc.azs
 }
+
+output "private_subnet_ids" {
+  description = "List of IDs of private subnets"
+  value       = module.vpc.private_subnets
+}
+output "efs_security_group_id" {
+  description = "ID of the security group for the EFS"
+  value       = aws_security_group.efs.id
+}
+
+output "mysql_security_group_id" {
+  description = "ID of the security group for the MySQL database"
+  value       = module.rds_mysql.security_group_id
+}
+
+output "postgresql_security_group_id" {
+  description = "ID of the security group for the PostgreSQL database"
+  value       = module.rds_postgresql.security_group_id
+}
