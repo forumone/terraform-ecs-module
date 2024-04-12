@@ -242,8 +242,12 @@
 | <a name="output_buildkite_deployer"></a> [buildkite\_deployer](#output\_buildkite\_deployer) | ARN of the Terraform deployment role for Buildkite to assume |
 | <a name="output_cluster_arn"></a> [cluster\_arn](#output\_cluster\_arn) | ARN of the ECS cluster |
 | <a name="output_cluster_roles"></a> [cluster\_roles](#output\_cluster\_roles) | List of role ARNs associated with cluster tasks |
+| <a name="output_efs_security_group_id"></a> [efs\_security\_group\_id](#output\_efs\_security\_group\_id) | ID of the security group for the EFS |
 | <a name="output_iam_role_arns"></a> [iam\_role\_arns](#output\_iam\_role\_arns) | Map of custom IAM role ARNs created for applications |
 | <a name="output_iam_role_names"></a> [iam\_role\_names](#output\_iam\_role\_names) | Map of custom IAM role names created for applications |
+| <a name="output_mysql_security_group_id"></a> [mysql\_security\_group\_id](#output\_mysql\_security\_group\_id) | ID of the security group for the MySQL database |
+| <a name="output_postgresql_security_group_id"></a> [postgresql\_security\_group\_id](#output\_postgresql\_security\_group\_id) | ID of the security group for the PostgreSQL database |
+| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | List of IDs of private subnets |
 | <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | List of IDs of public subnets |
 | <a name="output_s3_backups"></a> [s3\_backups](#output\_s3\_backups) | ARN of the S3 backups bucket |
 | <a name="output_s3_bucket_arns"></a> [s3\_bucket\_arns](#output\_s3\_bucket\_arns) | Map of custom S3 bucket ARNs created for applications |
