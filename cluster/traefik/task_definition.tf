@@ -97,7 +97,7 @@ resource "aws_ecs_task_definition" "traefik" {
         "--entryPoints.websecure.proxyProtocol.trustedIPs=${join(",", var.public_subnets_ipv4)}",
         # Enable ping for health checks
         "--entryPoints.ping.address=:8082",
-        "--ping.entryPoint=ping",
+        "--ping.entryPoint=ping"
       ]
 
       mountPoints = [
@@ -138,14 +138,16 @@ resource "aws_ecs_task_definition" "traefik" {
           hostPort      = var.https_port
         }
       ]
+      healthCheck = [
+        {
+          command     = ["CMD-SHELL", "healthcheck || exit 1"]
+          interval    = 30
+          timeout     = 5
+          retries     = 3
+          startPeriod = 0
+        }
+      ]
     },
-    healthCheck {
-        command  = ["CMD-SHELL", "healthcheck || exit 1"]
-        interval = 30
-        timeout  = 5
-        retries  = 3
-        startPeriod = 0
-      }
   ])
 
   volume {
