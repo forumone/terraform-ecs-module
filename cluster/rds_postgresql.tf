@@ -9,6 +9,10 @@ module "postgresql" {
   engine_version = var.postgresql.engine_version
   instance_class = var.postgresql.instance_type
 
+  autoscaling_enabled      = var.postgresql.autoscaling_enabled
+  autoscaling_min_capacity = var.postgresql.autoscaling_min_capacity
+  autoscaling_max_capacity = var.postgresql.replica_count
+
   instances = {
     for i in range(var.postgresql.replica_count) :
     i => {}
