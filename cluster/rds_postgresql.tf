@@ -2,7 +2,7 @@ module "postgresql" {
   count = var.postgresql == null ? 0 : 1
 
   source  = "terraform-aws-modules/rds-aurora/aws"
-  version = "~> 7.6"
+  version = "~> 9.3"
 
   name           = "${var.name}-aurora-postgresql"
   engine         = "aurora-postgresql"
