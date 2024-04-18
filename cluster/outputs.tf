@@ -126,10 +126,10 @@ output "efs_security_group_id" {
 
 output "mysql_security_group_id" {
   description = "ID of the security group for the MySQL database"
-  value       = try(module.rds_mysql[0].security_group_id, null)
+  value       = try(module.mysql[0].security_group_id, null)
 }
 
 output "postgresql_security_group_id" {
   description = "ID of the security group for the PostgreSQL database"
-  value       = try(module.rds_postgresql[0].security_group_id, null)
+  value       = try(module.postgresql[0].security_group_id, null)
 }
