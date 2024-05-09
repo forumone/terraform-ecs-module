@@ -9,7 +9,7 @@ definitions:
   ecr: &ecr
     ecr#v2.7.0:
       login: true
-      account-ids: 
+      account-ids:
         - "public.ecr.aws"
       region: us-east-2
       no-include-email: true
@@ -107,26 +107,6 @@ steps:
         commands:
           - docker build {{matrix}}
 
-  # Run type checking against the RunTask helper
-  - label: ":typescript: Typecheck run-task helper"
-    branches:
-      - "!main"
-
-    concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
-    concurrency: 4
-    concurrency_method: eager
-
-    plugins:
-      - docker#v5.10.0:
-          image: *nodejs
-          entrypoint: /bin/bash
-          command:
-            - -ec
-            - |
-              cd run-task
-              npm ci
-              npm run check
-
   - group: "Check backups"
     steps:
       # Do a test build of the backups container
@@ -187,23 +167,6 @@ steps:
 
     plugins:
       - *ecr
-
-  - label: ":docker: Build RunTask helper"
-    <<: *docker-agents
-
-    branches:
-      - main
-
-    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
-    concurrency: 2
-
-    commands:
-      - docker build run-task --tag ${ECR_NAMESPACE}/ecs-run-task:latest
-      - docker push ${ECR_NAMESPACE}/ecs-run-task:latest
-
-    plugins:
-      - *ecr
-
 
   - label: ":docker: Build backups container"
     <<: *docker-agents
