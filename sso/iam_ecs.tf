@@ -43,6 +43,18 @@ data "aws_iam_policy_document" "ecs_access" {
       values   = var.ecs_cluster_arns
     }
   }
+
+  statement {
+    sid    = "readAutoScaling"
+    effect = "Allow"
+
+    actions = [
+      "application-autoscaling:DescribeScalableTargets",
+      "application-autoscaling:DescribeScalingActivities"
+    ]
+
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "ecs_access" {
