@@ -205,6 +205,6 @@ resource "aws_iam_policy" "cloudwatch_access" {
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_access" {
-  role       = aws_iam_role.ecs_default_exec.name
+  role       = aws_iam_role.ecs_default_task.name
   policy_arn = aws_iam_policy.cloudwatch_access.arn
 }
