@@ -8,6 +8,7 @@ resource "aws_security_group" "ecs" {
     Name = "${var.name}-ecs-application"
   }
 }
+
 resource "aws_security_group_rule" "ecs_default_http_out_all" {
   security_group_id = aws_security_group.ecs.id
   description       = "Default access for ECS to HTTP outbound"
@@ -56,6 +57,26 @@ resource "aws_security_group_rule" "ecs_default_traefik_in_80" {
 resource "aws_security_group_rule" "ecs_default_traefik_out_80" {
   description              = "Egress from Traefik to ECS (port 80)"
   security_group_id        = module.traefik.security_group_id
+  type                     = "egress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.ecs.id
+}
+
+resource "aws_security_group_rule" "ecs_default_traefik_alb_in_80" {
+  description              = "Ingress from Traefik to ECS (port 80)"
+  security_group_id        = aws_security_group.ecs.id
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  source_security_group_id = module.traefik_alb.security_group_id
+}
+
+resource "aws_security_group_rule" "ecs_default_traefik_alb_out_80" {
+  description              = "Egress from Traefik to ECS (port 80)"
+  security_group_id        = module.traefik_alb.security_group_id
   type                     = "egress"
   from_port                = 80
   to_port                  = 80
