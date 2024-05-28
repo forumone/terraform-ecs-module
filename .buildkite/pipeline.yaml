@@ -4,7 +4,6 @@ env:
 definitions:
   terraform: &terraform hashicorp/terraform:1.7.3
   tflint: &tflint ghcr.io/terraform-linters/tflint-bundle
-  nodejs: &nodejs node:18
 
   ecr: &ecr
     ecr#v2.7.0:
@@ -21,6 +20,7 @@ definitions:
     - cluster
     - cluster/application
     - cluster/traefik
+    - cluster/traefik-alb
     - sso
     - tf_mysql_aurora
     - tf_postgresql_aurora
