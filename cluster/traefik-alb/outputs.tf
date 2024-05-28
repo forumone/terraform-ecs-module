@@ -1,7 +1,7 @@
 # Module Outputs
 output "security_group_id" {
   value       = aws_security_group.traefik.id
-  description = "The Security Group IP of the Traefik ECS Security Group"
+  description = "The Security Group ID of the Traefik ECS Security Group"
 }
 
 output "http_target_group_arn" {
