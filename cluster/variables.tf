@@ -50,11 +50,13 @@ variable "mysql" {
   description = "Options controlling the Aurora MySQL cluster"
 
   type = object({
-    engine_version      = string
-    instance_type       = string
-    replica_count       = number
-    db_parameters       = optional(list(map(string)), [])
-    db_parameter_family = string
+    engine_version           = string
+    instance_type            = string
+    replica_count            = number
+    db_parameters            = optional(list(map(string)), [])
+    db_parameter_family      = string
+    autoscaling_enabled      = optional(bool, false)
+    autoscaling_min_capacity = optional(number, 0)
   })
 
   default = null
@@ -64,9 +66,11 @@ variable "postgresql" {
   description = "Options controlling the Aurora PostgreSQL cluster"
 
   type = object({
-    engine_version = string
-    instance_type  = string
-    replica_count  = number
+    engine_version           = string
+    instance_type            = string
+    replica_count            = number
+    autoscaling_enabled      = optional(bool, false)
+    autoscaling_min_capacity = optional(number, 0)
   })
 
   default = null

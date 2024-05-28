@@ -2,7 +2,7 @@ module "mysql" {
   count = var.mysql == null ? 0 : 1
 
   source  = "terraform-aws-modules/rds-aurora/aws"
-  version = "~> 7.6"
+  version = "~> 9.3"
 
   name           = "${var.name}-aurora-mysql"
   engine         = "aurora-mysql"
@@ -12,6 +12,10 @@ module "mysql" {
   create_db_parameter_group     = true
   db_parameter_group_family     = var.mysql.db_parameter_family
   db_parameter_group_parameters = var.mysql.db_parameters
+
+  autoscaling_enabled      = var.mysql.autoscaling_enabled
+  autoscaling_min_capacity = var.mysql.autoscaling_min_capacity
+  autoscaling_max_capacity = var.mysql.replica_count
 
   instances = {
     for i in range(var.mysql.replica_count) :

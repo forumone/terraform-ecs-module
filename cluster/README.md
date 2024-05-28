@@ -24,9 +24,9 @@
 | <a name="module_application"></a> [application](#module\_application) | ./application | n/a |
 | <a name="module_ecs"></a> [ecs](#module\_ecs) | terraform-aws-modules/ecs/aws | ~> 5.7 |
 | <a name="module_endpoints"></a> [endpoints](#module\_endpoints) | terraform-aws-modules/vpc/aws//modules/vpc-endpoints | ~> 5.4 |
-| <a name="module_mysql"></a> [mysql](#module\_mysql) | terraform-aws-modules/rds-aurora/aws | ~> 7.6 |
+| <a name="module_mysql"></a> [mysql](#module\_mysql) | terraform-aws-modules/rds-aurora/aws | ~> 9.3 |
 | <a name="module_nlb_log_bucket"></a> [nlb\_log\_bucket](#module\_nlb\_log\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1 |
-| <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | terraform-aws-modules/rds-aurora/aws | ~> 7.6 |
+| <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | terraform-aws-modules/rds-aurora/aws | ~> 9.3 |
 | <a name="module_s3_backups"></a> [s3\_backups](#module\_s3\_backups) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1 |
 | <a name="module_s3_env"></a> [s3\_env](#module\_s3\_env) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1  |
 | <a name="module_s3_tfstate"></a> [s3\_tfstate](#module\_s3\_tfstate) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1 |
@@ -233,9 +233,9 @@
 | <a name="input_backups"></a> [backups](#input\_backups) | Options controlling backups behavior | <pre>object({<br>    retention = optional(number, 30)<br>  })</pre> | `{}` | no |
 | <a name="input_logs"></a> [logs](#input\_logs) | Options controlling CloudWatch and S3 logging behavior | <pre>object({<br>    retention = optional(number, 30)<br>  })</pre> | `{}` | no |
 | <a name="input_memcache"></a> [memcache](#input\_memcache) | Options controlling the Elasticache Memcache cluster | <pre>object({<br>    engine_version       = string<br>    node_type            = string<br>    num_cache_nodes      = number<br>    parameter_group_name = string<br>  })</pre> | `null` | no |
-| <a name="input_mysql"></a> [mysql](#input\_mysql) | Options controlling the Aurora MySQL cluster | <pre>object({<br>    engine_version      = string<br>    instance_type       = string<br>    replica_count       = number<br>    db_parameters       = optional(list(map(string)), [])<br>    db_parameter_family = string<br>  })</pre> | `null` | no |
+| <a name="input_mysql"></a> [mysql](#input\_mysql) | Options controlling the Aurora MySQL cluster | <pre>object({<br>    engine_version           = string<br>    instance_type            = string<br>    replica_count            = number<br>    db_parameters            = optional(list(map(string)), [])<br>    db_parameter_family      = string<br>    autoscaling_enabled      = optional(bool, false)<br>    autoscaling_min_capacity = optional(number, 0)<br>  })</pre> | `null` | no |
 | <a name="input_networking"></a> [networking](#input\_networking) | Options controlling networking and security groups | <pre>object({<br>    ingress_ports = optional(list(number), [])<br>  })</pre> | `{}` | no |
-| <a name="input_postgresql"></a> [postgresql](#input\_postgresql) | Options controlling the Aurora PostgreSQL cluster | <pre>object({<br>    engine_version = string<br>    instance_type  = string<br>    replica_count  = number<br>  })</pre> | `null` | no |
+| <a name="input_postgresql"></a> [postgresql](#input\_postgresql) | Options controlling the Aurora PostgreSQL cluster | <pre>object({<br>    engine_version           = string<br>    instance_type            = string<br>    replica_count            = number<br>    autoscaling_enabled      = optional(bool, false)<br>    autoscaling_min_capacity = optional(number, 0)<br>  })</pre> | `null` | no |
 | <a name="input_redis"></a> [redis](#input\_redis) | Options controlling the Elasticache Redis cluster | <pre>object({<br>    engine_version     = string<br>    node_type          = string<br>    num_cache_clusters = number<br>    parameter_group    = string<br>  })</pre> | `null` | no |
 | <a name="input_search"></a> [search](#input\_search) | Options controlling the AWS OpenSearch cluster | <pre>object({<br>    engine_version       = string<br>    instance_type        = string<br>    instance_count       = number<br>    storage_size         = number<br>    storage_type         = optional(string, "gp2")<br>    storage_iops         = optional(number)<br>    storage_throughput   = optional(number)<br>    dedicated_node_count = optional(number, 0)<br>    dedicated_node_type  = optional(string)<br>    enable_logs          = optional(list(string), ["ES_APPLICATION_LOGS"])<br>  })</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to created resources | `map(string)` | `{}` | no |
