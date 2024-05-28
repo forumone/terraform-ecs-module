@@ -77,8 +77,7 @@
 | <a name="output_http_lb_listener_arn"></a> [http\_lb\_listener\_arn](#output\_http\_lb\_listener\_arn) | The Traefik HTTP Listener ARN |
 | <a name="output_http_target_group_arn"></a> [http\_target\_group\_arn](#output\_http\_target\_group\_arn) | The Traefik HTTP Target |
 | <a name="output_https_lb_listener_arn"></a> [https\_lb\_listener\_arn](#output\_https\_lb\_listener\_arn) | The Traefik HTTPS Listener ARN |
-| <a name="output_https_target_group_arn"></a> [https\_target\_group\_arn](#output\_https\_target\_group\_arn) | The Traefik HTTPS Target |
-| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The Security Group IP of the Traefik ECS Security Group |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The Security Group ID of the Traefik ECS Security Group |
 | <a name="output_traefik_ecs_service_id"></a> [traefik\_ecs\_service\_id](#output\_traefik\_ecs\_service\_id) | The Traefik ECS Service ID |
 | <a name="output_traefik_ecs_task_arn"></a> [traefik\_ecs\_task\_arn](#output\_traefik\_ecs\_task\_arn) | The Traefik ECS Task ARN |
 | <a name="output_traefik_ecs_task_revision"></a> [traefik\_ecs\_task\_revision](#output\_traefik\_ecs\_task\_revision) | The Traefik ECS Task Revision |
