@@ -41,7 +41,7 @@ module "alb_log_bucket" {
 }
 
 resource "aws_lb" "alb" {
-  name_prefix        = var.name
+  name               = "${var.name}-alb"
   load_balancer_type = "application"
 
   subnets         = module.vpc.public_subnets
