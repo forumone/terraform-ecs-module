@@ -21,7 +21,7 @@ resource "aws_lb_listener" "traefik_http" {
 resource "aws_lb_listener" "traefik_https" {
   load_balancer_arn = var.alb_arn
   port              = 443
-  protocol          = "TLS"
+  protocol          = "HTTPS"
   ssl_policy        = var.tls_policy
   certificate_arn   = var.acm_default_cert_arn
 
