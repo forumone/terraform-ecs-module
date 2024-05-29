@@ -44,7 +44,6 @@ resource "aws_lb_target_group" "traefik_http" {
   port              = 80
   protocol          = "HTTP"
   target_type       = "ip"
-  proxy_protocol_v2 = true
   vpc_id            = var.vpc_id
 
   # Hit the built-in /ping endpoint for ALB health checks
