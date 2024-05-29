@@ -50,20 +50,20 @@ resource "aws_security_group_rule" "alb_traefik_out_ping" {
   description       = "Egress from the ALB to Traefik (port 8080)"
 
   type      = "egress"
-  from_port = 80
-  to_port   = 80
+  from_port = 8080
+  to_port   = 8080
   protocol  = "tcp"
 
   source_security_group_id = aws_security_group.traefik.id
 }
 
-resource "aws_security_group_rule" "alb_traefik_in_piong" {
+resource "aws_security_group_rule" "alb_traefik_in_ping" {
   security_group_id = aws_security_group.traefik.id
   description       = "Ingress from the ALB to Traefik (port 8080)"
 
   type      = "ingress"
-  from_port = 80
-  to_port   = 80
+  from_port = 8080
+  to_port   = 8080
   protocol  = "tcp"
 
   source_security_group_id = var.alb_security_group_id
