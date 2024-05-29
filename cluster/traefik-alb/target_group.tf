@@ -41,10 +41,10 @@ resource "aws_lb_listener_certificate" "traefik_https" {
 resource "aws_lb_target_group" "traefik_http" {
   name = "${var.ecs_cluster_name}-traefik-alb"
 
-  port              = 80
-  protocol          = "HTTP"
-  target_type       = "ip"
-  vpc_id            = var.vpc_id
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
 
   # Hit the built-in /ping endpoint for ALB health checks
   health_check {
