@@ -87,6 +87,10 @@ resource "aws_ecs_task_definition" "traefik" {
         # Listen for HTTP traffic on port 80
         "--entryPoints.websecure.address=:80",
 
+        # Trust X-Forwarded-For from any IP range (since Traefik is only
+        # accessible via the ALB, this is not an issue)
+        "--entrypoints.websecure.forwardedHeaders.insecure",
+
         # Allow the ping endpoint for ALB health checks
         "--ping",
       ]
