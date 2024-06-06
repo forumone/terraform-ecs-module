@@ -182,6 +182,7 @@ variable "applications" {
     containers     = list(string)
     acmSubdomain   = optional(bool, false)
     roles          = optional(list(string))
+    users          = optional(list(string))
     buckets        = optional(list(string))
     services       = optional(list(string))
     logGroups      = optional(list(string))
