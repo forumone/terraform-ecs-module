@@ -22,14 +22,19 @@ resource "aws_route53_record" "public_ns" {
   provider = aws.infrastructure
 }
 
+locals {
+  dns_wildcard_name = var.dns.wildcard_target == "alb" ? aws_lb.alb.dns_name : aws_lb.nlb.dns_name
+  dns_wildcard_zone = var.dns.wildcard_target == "alb" ? aws_lb.alb.zone_id : aws_lb.nlb.zone_id
+}
+
 resource "aws_route53_record" "nlb_ipv4" {
   zone_id = aws_route53_zone.public.zone_id
   name    = "*"
   type    = "A"
 
   alias {
-    name                   = aws_lb.nlb.dns_name
-    zone_id                = aws_lb.nlb.zone_id
+    name                   = local.dns_wildcard_name
+    zone_id                = local.dns_wildcard_zone
     evaluate_target_health = false
   }
 }
@@ -40,8 +45,8 @@ resource "aws_route53_record" "nlb_ipv6" {
   type    = "AAAA"
 
   alias {
-    name                   = aws_lb.nlb.dns_name
-    zone_id                = aws_lb.nlb.zone_id
+    name                   = local.dns_wildcard_name
+    zone_id                = local.dns_wildcard_zone
     evaluate_target_health = false
   }
 }
