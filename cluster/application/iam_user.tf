@@ -68,7 +68,7 @@ resource "aws_secretsmanager_secret_version" "iam_credentials" {
   secret_id = aws_secretsmanager_secret.iam_credentials[each.key]
 
   secret_string = jsonencode(({
-    access_key_id     = aws_iam_access_key[each.key].id
-    secret_access_key = aws_iam_access_key[each.key].secret
+    access_key_id     = aws_iam_access_key[each.key].custom.id
+    secret_access_key = aws_iam_access_key[each.key].custom.secret
   }))
 }
