@@ -38,6 +38,26 @@ output "iam_role_names" {
   }
 }
 
+output "iam_user_arns" {
+  description = "Map of custom IAM user ARNs created for applications"
+
+  value = {
+    for name, application in module.application :
+    name => application.iam_user_arns
+    if length(application.iam_user_arns) > 0
+  }
+}
+
+output "iam_user_names" {
+  description = "Map of custom IAM user names created for applications"
+
+  value = {
+    for name, application in module.application :
+    name => application.iam_user_names
+    if length(application.iam_user_names) > 0
+  }
+}
+
 output "s3_bucket_arns" {
   description = "Map of custom S3 bucket ARNs created for applications"
 
