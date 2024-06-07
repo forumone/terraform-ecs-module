@@ -133,7 +133,7 @@ resource "aws_security_group_rule" "ecs_default_traefik_alb_out_extra" {
 
   description = "Egress from Traefik to ECS (port ${each.key})"
 
-  security_group_id        = module.traefik.security_group_id
+  security_group_id        = module.traefik_alb.security_group_id
   type                     = "egress"
   from_port                = each.value
   to_port                  = each.value
