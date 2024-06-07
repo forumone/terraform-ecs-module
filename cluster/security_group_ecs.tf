@@ -114,6 +114,33 @@ resource "aws_security_group_rule" "ecs_default_traefik_out_extra" {
   source_security_group_id = aws_security_group.ecs.id
 }
 
+# Allow the ALB Traefik service to communicate with tasks on additional ports
+resource "aws_security_group_rule" "ecs_default_traefik_in_extra" {
+  for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
+
+  description = "Ingress from Traefik to ECS (port ${each.key})"
+
+  security_group_id        = aws_security_group.ecs.id
+  type                     = "ingress"
+  from_port                = each.value
+  to_port                  = each.value
+  protocol                 = "tcp"
+  source_security_group_id = module.traefik_alb.security_group_id
+}
+
+resource "aws_security_group_rule" "ecs_default_traefik_out_extra" {
+  for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
+
+  description = "Egress from Traefik to ECS (port ${each.key})"
+
+  security_group_id        = module.traefik.security_group_id
+  type                     = "egress"
+  from_port                = each.value
+  to_port                  = each.value
+  protocol                 = "tcp"
+  source_security_group_id = module.traefik_alb.security_group_id
+}
+
 # Internal VPC MySQL access (only created if MySQL cluster is requested)
 resource "aws_security_group_rule" "ecs_default_mysql_in" {
   count = var.mysql == null ? 0 : 1
