@@ -115,7 +115,7 @@ resource "aws_security_group_rule" "ecs_default_traefik_out_extra" {
 }
 
 # Allow the ALB Traefik service to communicate with tasks on additional ports
-resource "aws_security_group_rule" "ecs_default_traefik_in_extra" {
+resource "aws_security_group_rule" "ecs_default_traefik_alb_in_extra" {
   for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
 
   description = "Ingress from Traefik to ECS (port ${each.key})"
@@ -128,7 +128,7 @@ resource "aws_security_group_rule" "ecs_default_traefik_in_extra" {
   source_security_group_id = module.traefik_alb.security_group_id
 }
 
-resource "aws_security_group_rule" "ecs_default_traefik_out_extra" {
+resource "aws_security_group_rule" "ecs_default_traefik_alb_out_extra" {
   for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
 
   description = "Egress from Traefik to ECS (port ${each.key})"
