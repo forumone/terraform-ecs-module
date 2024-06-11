@@ -225,7 +225,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_applications"></a> [applications](#input\_applications) | Application-specific configuration | <pre>list(object({<br>    name           = string<br>    environments   = map(list(string))<br>    containers     = list(string)<br>    acmSubdomain   = optional(bool, false)<br>    roles          = optional(list(string))<br>    buckets        = optional(list(string))<br>    services       = optional(list(string))<br>    logGroups      = optional(list(string))<br>    accessPoints   = optional(list(string))<br>    securityGroups = optional(list(string))<br><br>    databases = optional(object({<br>      mysql      = optional(list(string), [])<br>      postgresql = optional(list(string), [])<br>    }))<br>  }))</pre> | n/a | yes |
+| <a name="input_applications"></a> [applications](#input\_applications) | Application-specific configuration | <pre>list(object({<br>    name           = string<br>    environments   = map(list(string))<br>    containers     = list(string)<br>    acmSubdomain   = optional(bool, false)<br>    roles          = optional(list(string))<br>    users          = optional(list(string))<br>    buckets        = optional(list(string))<br>    services       = optional(list(string))<br>    logGroups      = optional(list(string))<br>    accessPoints   = optional(list(string))<br>    securityGroups = optional(list(string))<br><br>    databases = optional(object({<br>      mysql      = optional(list(string), [])<br>      postgresql = optional(list(string), [])<br>    }))<br>  }))</pre> | n/a | yes |
 | <a name="input_buildkite"></a> [buildkite](#input\_buildkite) | Options indicating Buildkite roles for building/deploying | <pre>object({<br>    builders  = list(string)<br>    deployers = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_dns"></a> [dns](#input\_dns) | Options controlling public and private DNS | <pre>object({<br>    suffix          = string<br>    cloudmap        = bool<br>    wildcard_target = optional(string, "nlb")<br>  })</pre> | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the cluster. Used to uniquely identify all resources related to this cluster | `string` | n/a | yes |
@@ -255,6 +255,8 @@
 | <a name="output_efs_security_group_id"></a> [efs\_security\_group\_id](#output\_efs\_security\_group\_id) | ID of the security group for the EFS |
 | <a name="output_iam_role_arns"></a> [iam\_role\_arns](#output\_iam\_role\_arns) | Map of custom IAM role ARNs created for applications |
 | <a name="output_iam_role_names"></a> [iam\_role\_names](#output\_iam\_role\_names) | Map of custom IAM role names created for applications |
+| <a name="output_iam_user_arns"></a> [iam\_user\_arns](#output\_iam\_user\_arns) | Map of custom IAM user ARNs created for applications |
+| <a name="output_iam_user_names"></a> [iam\_user\_names](#output\_iam\_user\_names) | Map of custom IAM user names created for applications |
 | <a name="output_mysql_security_group_id"></a> [mysql\_security\_group\_id](#output\_mysql\_security\_group\_id) | ID of the security group for the MySQL database |
 | <a name="output_postgresql_security_group_id"></a> [postgresql\_security\_group\_id](#output\_postgresql\_security\_group\_id) | ID of the security group for the PostgreSQL database |
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | List of IDs of private subnets |

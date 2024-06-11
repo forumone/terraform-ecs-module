@@ -50,6 +50,8 @@ variable "application" {
   #   for each combination of container and environment name.
   # * roles: List of IAM roles to create for each environment. No policies are
   #   automatically attached to these roles.
+  # * users: List of IAM users to create for each environment, in rare cases
+  #   where IAM roles are not supported. Do not use this unless absolutely necessary.
   # * buckets: List of S3 buckets to create for each environment. These are only
   #   partially managed; versioning and at-rest encryption are enabled but no
   #   other features are controlled.
@@ -66,6 +68,7 @@ variable "application" {
     environments   = map(list(string))
     containers     = list(string)
     roles          = optional(list(string), [])
+    users          = optional(list(string), [])
     buckets        = optional(list(string), [])
     services       = optional(list(string), [])
     logGroups      = optional(list(string), [])

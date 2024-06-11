@@ -25,6 +25,24 @@ output "iam_role_names" {
   }
 }
 
+output "iam_user_arns" {
+  description = "Map of user nicknames to ARNs"
+
+  value = {
+    for key, user in aws_iam_user.custom :
+    key => user.arn
+  }
+}
+
+output "iam_user_names" {
+  description = "Map of user nicknames to full names"
+
+  value = {
+    for key, user in aws_iam_user.custom :
+    key => user.name
+  }
+}
+
 output "s3_bucket_arns" {
   description = "Map of bucket nicknames to ARNs"
 
