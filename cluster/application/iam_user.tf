@@ -65,7 +65,7 @@ resource "aws_secretsmanager_secret" "iam_credentials" {
 resource "aws_secretsmanager_secret_version" "iam_credentials" {
   for_each = local.users
 
-  secret_id = aws_secretsmanager_secret.iam_credentials[each.key]
+  secret_id = aws_secretsmanager_secret.iam_credentials[each.key].id
 
   secret_string = jsonencode(({
     access_key_id     = aws_iam_access_key.custom[each.key].id
