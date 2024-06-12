@@ -56,7 +56,7 @@ resource "aws_iam_access_key" "custom" {
 resource "aws_secretsmanager_secret" "iam_credentials" {
   for_each = local.users
 
-  name        = "${local.directory_prefix}/${each.value.env}/iam/${each.value.env}/keys"
+  name        = "${local.directory_prefix}/${each.value.env}/iam/${each.value.user}/keys"
   description = "IAM access keys for the ${each.value.env}/${each.value.user} user"
 
   tags = var.tags
