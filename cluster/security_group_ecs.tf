@@ -138,7 +138,7 @@ resource "aws_security_group_rule" "ecs_default_traefik_alb_out_extra" {
   from_port                = each.value
   to_port                  = each.value
   protocol                 = "tcp"
-  source_security_group_id = module.traefik_alb.security_group_id
+  source_security_group_id = module.ecs.security_group_id
 }
 
 # Internal VPC MySQL access (only created if MySQL cluster is requested)
