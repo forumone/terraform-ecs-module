@@ -65,13 +65,13 @@ resource "aws_ssoadmin_permission_set_inline_policy" "this" {
 
 # Attach custom policies to the permission set
 resource "aws_ssoadmin_customer_managed_policy_attachment" "this" {
-  for_each = toset(var.custom_managed_policies)
+  count = length(var.custom_managed_policies)
 
   instance_arn       = aws_ssoadmin_permission_set.this.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this.arn
 
   customer_managed_policy_reference {
-    name = each.key
+    name = var.custom_managed_policies[count.index]
     path = "/"
   }
   provider = aws.main
