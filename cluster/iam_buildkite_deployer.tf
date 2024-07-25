@@ -225,5 +225,5 @@ resource "aws_iam_role_policy_attachment" "buildkite_deployer_eventbridge" {
 
 resource "aws_iam_role_policy_attachment" "buildkite_deployer_automation" {
   role       = aws_iam_role.buildkite_deployer.name
-  policy_arn = aws_iam_policy.buildkite_deployer_automation.arn
+  policy_arn = aws_iam_policy.automation_access.arn
 }
