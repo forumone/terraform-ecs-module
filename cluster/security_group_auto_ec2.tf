@@ -83,3 +83,25 @@ resource "aws_security_group_rule" "automation_ec2_postgresql_out" {
   protocol                 = "tcp"
   source_security_group_id = module.postgresql[0].security_group_id
 }
+
+resource "aws_security_group_rule" "automation_ec2_efs_out" {
+  description = "Egress from automated EC2 instances to EFS"
+
+  security_group_id        = aws_security_group.automation_ec2.id
+  type                     = "egress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.efs.id
+}
+
+resource "aws_security_group_rule" "efs_automation_ec2_in" {
+  description = "Ingress from automated EC2 instances to EFS"
+
+  security_group_id        = aws_security_group.efs.id
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.automation_ec2.id
+}
