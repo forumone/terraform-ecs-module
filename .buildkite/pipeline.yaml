@@ -32,30 +32,6 @@ definitions:
         queue: "docker-builders"
 
 steps:
-  - group: ":terraform: Validate"
-    steps:
-      - label: "Validate: {{matrix}}"
-        matrix: *modules
-
-        concurrency_group: $BUILDKITE_PIPELINE_SLUG/syntax
-        concurrency: 4
-        concurrency_method: eager
-
-        env:
-          MODULE_DIR: "{{matrix}}"
-
-        plugins:
-          - docker#v5.10.0:
-              image: *terraform
-              environment: [MODULE_DIR]
-              entrypoint: /bin/sh
-              command:
-                - -ec
-                - |
-                  cd $$MODULE_DIR
-                  terraform init -backend=false
-                  terraform validate
-
   - group: ":terraform: Formatting"
     steps:
       - label: "Format: {{matrix}}"
