@@ -196,6 +196,15 @@ variable "applications" {
   }))
 }
 
+variable "automation" {
+  description = "Automation configuration"
+
+  type = object({
+    transfer_bucket_name = string
+    transfer_bucket_arn  = string
+  })
+}
+
 variable "tags" {
   description = "Tags to apply to created resources"
   type        = map(string)
