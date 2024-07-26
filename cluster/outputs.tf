@@ -103,6 +103,11 @@ output "ssm_read_policy" {
   value       = aws_iam_policy.parameter_store_read_only.name
 }
 
+output "automation_policy" {
+  description = "Name of the Systems Manager automation policy"
+  value       = aws_iam_policy.automation_access.name
+}
+
 output "cluster_arn" {
   description = "ARN of the ECS cluster"
   value       = module.ecs.cluster_arn
