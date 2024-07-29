@@ -62,8 +62,8 @@ data "aws_iam_policy_document" "buildkite_deploy_ecs" {
   }
 
   statement {
-    sid = "tagResources"
-    effect = "Allow"
+    sid     = "tagResources"
+    effect  = "Allow"
     actions = ["ecs:TagResource"]
 
     # Scope tagging to task definitions and services only
