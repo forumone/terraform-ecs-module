@@ -58,7 +58,7 @@ resource "aws_ssm_document" "mysql_import" {
           ImageId          = "{{ zzzInstanceAmiId }}"
           InstanceType     = "t3a.medium"
           SubnetId         = module.vpc.private_subnets[0]
-          SecurityGroupIds = [aws_security_group.automation_ec.id]
+          SecurityGroupIds = [aws_security_group.automation_ec2.id]
 
           BlockDeviceMappings = [
             {
