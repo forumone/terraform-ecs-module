@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     condition {
       test     = "Bool"
       variable = "ec2:AssociatePublicIp"
-      values   = "true"
+      values   = ["true"]
     }
   }
 
@@ -52,13 +52,13 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     effect  = "Allow"
     actions = ["ec2:RunInstances"]
 
-    resources = concat([
+    resources = concat(
       # Only allow launching in these subnets
       module.vpc.private_subnet_arns,
 
       # Only allow these security groups
       [aws_security_group.automation_ec2.arn],
-    ])
+    )
   }
 
   statement {
