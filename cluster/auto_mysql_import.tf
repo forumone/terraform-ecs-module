@@ -27,9 +27,10 @@ resource "aws_ssm_document" "mysql_import" {
       }
 
       dropBeforeImport = {
-        type        = "Boolean"
-        default     = false
-        description = "Whether or not to drop all tables before import. Sometimes needed to fully wipe a database."
+        type          = "String"
+        default       = "false"
+        description   = "Whether or not to drop all tables before import. Sometimes needed to fully wipe a database."
+        allowedValues = ["true", "false"]
       }
 
       importKey = {
