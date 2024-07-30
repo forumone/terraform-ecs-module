@@ -61,6 +61,18 @@ data "aws_iam_policy_document" "buildkite_deploy_ecs" {
     resources = ["*"]
   }
 
+  statement {
+    sid     = "tagResources"
+    effect  = "Allow"
+    actions = ["ecs:TagResource"]
+
+    # Scope tagging to task definitions and services only
+    resources = [
+      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current}:service/${var.name}/*",
+      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current}:task-definition:*",
+    ]
+  }
+
   # Per the AWS app auto scaling docs, these actions do not support limiting by resource
   statement {
     sid    = "readWriteAutoScaling"
@@ -73,7 +85,8 @@ data "aws_iam_policy_document" "buildkite_deploy_ecs" {
       "application-autoscaling:PutScalingPolicy",
       "application-autoscaling:DeleteScalingPolicy",
       "application-autoscaling:DescribeScalingPolicies",
-      "application-autoscaling:ListTagsForResource"
+      "application-autoscaling:ListTagsForResource",
+      "application-autoscaling:TagResource",
     ]
 
     resources = ["*"]
@@ -194,6 +207,7 @@ data "aws_iam_policy_document" "buildkite_deployer_eventbridge" {
       "events:DescribeRule",
       "events:ListTagsForResource",
       "events:PutRule",
+      "events:TagResources",
     ]
   }
 
