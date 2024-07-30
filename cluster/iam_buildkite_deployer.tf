@@ -68,8 +68,8 @@ data "aws_iam_policy_document" "buildkite_deploy_ecs" {
 
     # Scope tagging to task definitions and services only
     resources = [
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current}:service/${var.name}/*",
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current}:task-definition:*",
+      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${var.name}/*",
+      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition:*",
     ]
   }
 
