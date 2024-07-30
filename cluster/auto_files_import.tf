@@ -25,9 +25,11 @@ resource "aws_ssm_document" "files_import" {
         description = "Name of the site's file directory to be exported (e.g., uploads)."
       }
 
-      deleteOnImport = {
-        type        = "String"
-        description = "If the file import process should delete files not present in the downloaded archive."
+      deleteOnSync = {
+        type          = "String"
+        default       = "false"
+        description   = "If the file import process should delete files not present in the downloaded archive."
+        allowedValues = ["true", "false"]
       }
 
       importKey = {
