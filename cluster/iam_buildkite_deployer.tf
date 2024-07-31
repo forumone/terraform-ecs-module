@@ -207,7 +207,7 @@ data "aws_iam_policy_document" "buildkite_deployer_eventbridge" {
       "events:DescribeRule",
       "events:ListTagsForResource",
       "events:PutRule",
-      "events:TagResources",
+      "events:TagResource",
     ]
   }
 
