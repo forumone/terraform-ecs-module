@@ -33,7 +33,9 @@ resource "aws_iam_role" "custom" {
 
   assume_role_policy = data.aws_iam_policy_document.ecs_tasks_assume.json
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }
 
 # Store role ARNs as SSM parameters for easier access by downstream deployments
@@ -44,5 +46,7 @@ resource "aws_ssm_parameter" "iam_role_arn" {
   type  = "String"
   value = aws_iam_role.custom[each.key].arn
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }

@@ -143,4 +143,6 @@ resource "aws_ecs_task_definition" "traefik" {
     # Traefik and the AWS CLI startup container.
     name = "configuration"
   }
+
+  tags = var.tags
 }

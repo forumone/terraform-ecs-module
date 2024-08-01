@@ -9,7 +9,7 @@ resource "aws_secretsmanager_secret" "backups" {
 
   recovery_window_in_days = 0
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     "f1-internal" = "true"
   })
 }
@@ -26,15 +26,21 @@ resource "aws_secretsmanager_secret_version" "backups" {
 resource "aws_cloudwatch_log_group" "backup_database" {
   name              = "/${var.name}/backups/database"
   retention_in_days = var.logs.retention
+
+  tags = local.tags
 }
 
 resource "aws_cloudwatch_log_group" "backup_files" {
   name              = "/${var.name}/backups/files"
   retention_in_days = var.logs.retention
+
+  tags = local.tags
 }
 
 resource "aws_ecr_repository" "backups" {
   name = "${var.name}/backups"
+
+  tags = local.tags
 }
 
 resource "aws_ecr_lifecycle_policy" "backups" {
@@ -63,10 +69,12 @@ resource "aws_ecr_lifecycle_policy" "backups" {
 
 resource "aws_sqs_queue" "backups_dead_letters" {
   name = "${var.name}-BackupsDeadLetters"
+
+  tags = local.tags
 }
 
 resource "aws_scheduler_schedule_group" "backups" {
   name = "${var.name}-backups"
 
-  tags = var.tags
+  tags = local.tags
 }

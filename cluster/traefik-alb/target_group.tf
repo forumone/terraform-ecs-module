@@ -14,6 +14,8 @@ resource "aws_lb_listener" "traefik_http" {
       status_code = "HTTP_301"
     }
   }
+
+  tags = var.tags
 }
 
 # Target group and listeners: HTTPS
@@ -29,6 +31,8 @@ resource "aws_lb_listener" "traefik_https" {
     target_group_arn = aws_lb_target_group.traefik_http.id
     type             = "forward"
   }
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener_certificate" "traefik_https" {

@@ -74,14 +74,10 @@ resource "aws_ssm_document" "files_import" {
             {
               ResourceType = "instance"
 
-              Tags = [
+              Tags = concat(local.tag_list, [
                 {
                   Key   = "Name"
                   Value = "EFS Import/{{ automation:EXECUTION_ID }}"
-                },
-                {
-                  Key   = "forumone:cluster"
-                  Value = var.name
                 },
                 {
                   Key   = "forumone:site"
@@ -91,7 +87,7 @@ resource "aws_ssm_document" "files_import" {
                   Key   = "forumone:environment"
                   Value = "{{ environment }}"
                 }
-              ]
+              ])
             }
           ]
         }

@@ -38,7 +38,7 @@ module "alb_log_bucket" {
     }
   ]
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_lb" "alb" {
@@ -57,5 +57,5 @@ resource "aws_lb" "alb" {
     enabled = true
   }
 
-  tags = var.tags
+  tags = local.tags
 }

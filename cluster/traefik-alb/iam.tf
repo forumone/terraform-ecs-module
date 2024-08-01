@@ -17,6 +17,8 @@ data "aws_iam_policy_document" "ecs_assume" {
 resource "aws_iam_role" "traefik_exec" {
   name               = "${var.ecs_cluster_name}-TraefikALBExecution"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume.json
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "traefik_exec" {
@@ -28,6 +30,8 @@ resource "aws_iam_role_policy_attachment" "traefik_exec" {
 resource "aws_iam_role" "traefik_task" {
   name               = "${var.ecs_cluster_name}-TraefikALBTask"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume.json
+
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "traefik_policy" {
@@ -59,6 +63,8 @@ data "aws_iam_policy_document" "traefik_policy" {
 resource "aws_iam_policy" "traefik_policy" {
   name   = "${var.ecs_cluster_name}-TraefikALBECSAccess"
   policy = data.aws_iam_policy_document.traefik_policy.json
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "traefik_policy" {

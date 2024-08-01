@@ -25,7 +25,7 @@ resource "aws_iam_policy" "ecs_pass_role" {
   description = "Grants permission to use the ECS IAM task roles for the ${var.name} cluster"
   policy      = data.aws_iam_policy_document.ecs_pass_role.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 # Automation access permissions; granted to Buildkite and exported to allow automated
@@ -79,4 +79,6 @@ resource "aws_iam_policy" "automation_access" {
   description = "Grants deployment tooling access to Systems Manager automation"
 
   policy = data.aws_iam_policy_document.automation_access.json
+
+  tags = local.tags
 }

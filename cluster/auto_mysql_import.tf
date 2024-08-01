@@ -75,14 +75,10 @@ resource "aws_ssm_document" "mysql_import" {
             {
               ResourceType = "instance"
 
-              Tags = [
+              Tags = concat(local.tag_list, [
                 {
                   Key   = "Name"
                   Value = "MySQL Import/{{ automation:EXECUTION_ID }}"
-                },
-                {
-                  Key   = "forumone:cluster"
-                  Value = var.name
                 },
                 {
                   Key   = "forumone:site"
@@ -92,7 +88,7 @@ resource "aws_ssm_document" "mysql_import" {
                   Key   = "forumone:environment"
                   Value = "{{ environment }}"
                 }
-              ]
+              ])
             }
           ]
         }
@@ -159,7 +155,5 @@ resource "aws_ssm_document" "mysql_import" {
     ]
   })
 
-  tags = {
-    "forumone:cluster" = var.name
-  }
+  tags = local.tags
 }

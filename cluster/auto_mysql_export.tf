@@ -68,14 +68,10 @@ resource "aws_ssm_document" "mysql_export" {
             {
               ResourceType = "instance"
 
-              Tags = [
+              Tags = concat(local.tag_list, [
                 {
                   Key   = "Name"
                   Value = "MySQL Export/{{ automation:EXECUTION_ID }}"
-                },
-                {
-                  Key   = "forumone:cluster"
-                  Value = var.name
                 },
                 {
                   Key   = "forumone:site"
@@ -85,7 +81,7 @@ resource "aws_ssm_document" "mysql_export" {
                   Key   = "forumone:environment"
                   Value = "{{ environment }}"
                 }
-              ]
+              ])
             }
           ]
         }

@@ -15,6 +15,8 @@ resource "aws_lb_target_group" "traefik_http" {
     port     = var.http_port
     protocol = "TCP"
   }
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener" "traefik_http" {
@@ -26,6 +28,8 @@ resource "aws_lb_listener" "traefik_http" {
     target_group_arn = aws_lb_target_group.traefik_http.id
     type             = "forward"
   }
+
+  tags = var.tags
 }
 
 # Target group and listeners: HTTPS
@@ -45,6 +49,8 @@ resource "aws_lb_target_group" "traefik_https" {
     port     = var.https_port
     protocol = "TCP"
   }
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener" "traefik_https" {
@@ -58,6 +64,8 @@ resource "aws_lb_listener" "traefik_https" {
     target_group_arn = aws_lb_target_group.traefik_https.id
     type             = "forward"
   }
+
+  tags = var.tags
 }
 
 resource "aws_lb_listener_certificate" "traefik_https" {

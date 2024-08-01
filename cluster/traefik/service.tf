@@ -24,6 +24,8 @@ resource "aws_ecs_service" "traefik" {
     security_groups = [aws_security_group.traefik.id]
   }
 
+  tags = var.tags
+
   lifecycle {
     ignore_changes = [desired_count]
   }
@@ -38,6 +40,8 @@ resource "aws_appautoscaling_target" "traefik" {
 
   min_capacity = var.autoscaling_min
   max_capacity = var.autoscaling_max
+
+  tags = var.tags
 }
 
 # Define a CPU-based scaling policy. Autoscaling will attempt to maintain around 30% CPU

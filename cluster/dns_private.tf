@@ -8,5 +8,5 @@ resource "aws_service_discovery_private_dns_namespace" "private_dns" {
   name        = "apps.internal"
   description = "Private service discovery namespace for the ${var.name} cluster"
 
-  tags = var.tags
+  tags = local.tags
 }

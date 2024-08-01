@@ -20,7 +20,8 @@ module "acm" {
   wait_for_validation = true
   zone_id             = aws_route53_zone.public.id
   validation_method   = "DNS"
-  tags = merge(var.tags, {
+
+  tags = merge(local.tags, {
     Name = "${var.name}.${var.dns.suffix}"
   })
 }

@@ -4,7 +4,7 @@ resource "aws_ecr_repository" "repository" {
 
   name = "${var.cluster_name}/${var.application.name}/${each.value}"
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_ecr_lifecycle_policy" "repository" {

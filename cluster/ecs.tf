@@ -37,7 +37,7 @@ module "ecs" {
     value = "disabled"
   }
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_ssm_parameter" "cluster_arn" {
@@ -45,7 +45,7 @@ resource "aws_ssm_parameter" "cluster_arn" {
   type  = "String"
   value = module.ecs.cluster_arn
 
-  tags = var.tags
+  tags = local.tags
 }
 
 # Generic assume role policy for ECS tasks

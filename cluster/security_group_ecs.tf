@@ -4,9 +4,9 @@ resource "aws_security_group" "ecs" {
   description = "Default group for ECS"
   vpc_id      = module.vpc.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${var.name}-ecs-application"
-  }
+  })
 }
 
 resource "aws_security_group_rule" "ecs_default_http_out_all" {

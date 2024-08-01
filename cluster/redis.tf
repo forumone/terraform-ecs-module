@@ -16,6 +16,8 @@ resource "aws_elasticache_replication_group" "redis" {
   port                       = 6379
   subnet_group_name          = module.vpc.elasticache_subnet_group_name
   security_group_ids         = [aws_security_group.redis[0].id]
+
+  tags = local.tags
 }
 
 # redis default Security Group
@@ -26,9 +28,9 @@ resource "aws_security_group" "redis" {
 
   vpc_id = module.vpc.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${var.name}-redis"
-  }
+  })
 }
 
 # Allow ingress from ECS
@@ -62,4 +64,6 @@ resource "aws_ssm_parameter" "redis" {
   description = "Redis primary endpoint address"
   type        = "String"
   value       = aws_elasticache_replication_group.redis[0].primary_endpoint_address
+
+  tags = local.tags
 }

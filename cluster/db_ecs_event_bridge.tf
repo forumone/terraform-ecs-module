@@ -5,6 +5,8 @@ resource "aws_cloudwatch_event_rule" "db_creation" {
   name                = "${var.name}-terraform-database-creation"
   description         = "${var.name} terraform database creation for ECS Fargate"
   schedule_expression = "rate(2 hours)"
+
+  tags = local.tags
 }
 
 resource "aws_cloudwatch_event_target" "mysql_db_creation" {
@@ -19,6 +21,8 @@ resource "aws_cloudwatch_event_target" "mysql_db_creation" {
 
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.terraform_mysql_database_exec[0].arn
+
+    tags = local.tags
 
     network_configuration {
       subnets         = module.vpc.private_subnets
@@ -39,6 +43,8 @@ resource "aws_cloudwatch_event_target" "postgresql_db_creation" {
 
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.terraform_postgresql_database_exec[0].arn
+
+    tags = local.tags
 
     network_configuration {
       subnets         = module.vpc.private_subnets

@@ -25,7 +25,7 @@ module "mysql" {
   apply_immediately   = true
   monitoring_interval = 5
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret" "mysql_root_credentials" {
@@ -36,7 +36,7 @@ resource "aws_secretsmanager_secret" "mysql_root_credentials" {
 
   recovery_window_in_days = 0
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     "f1-internal" = "true"
   })
 }
@@ -65,6 +65,8 @@ resource "aws_ssm_parameter" "mysql_endpoint" {
   name  = "/${var.name}/endpoints/mysql-writer"
   type  = "String"
   value = module.mysql[0].cluster_endpoint
+
+  tags = local.tags
 }
 
 resource "aws_ssm_parameter" "mysql_ro_endpoint" {
@@ -72,4 +74,6 @@ resource "aws_ssm_parameter" "mysql_ro_endpoint" {
   name  = "/${var.name}/endpoints/mysql-reader"
   type  = "String"
   value = module.mysql[0].cluster_reader_endpoint
+
+  tags = local.tags
 }

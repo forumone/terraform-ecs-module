@@ -14,6 +14,8 @@ resource "aws_iam_role" "cron_eventbridge" {
   name = "${var.name}-CronEventBridge"
 
   assume_role_policy = data.aws_iam_policy_document.cron_eventbridge_assume.json
+
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "cron_ecs_run_task" {
@@ -37,7 +39,7 @@ resource "aws_iam_policy" "cron_ecs_run_task" {
   name   = "${var.name}-CronRunTask"
   policy = data.aws_iam_policy_document.cron_ecs_run_task.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cron_ecs_run_task" {
@@ -54,4 +56,6 @@ resource "aws_ssm_parameter" "cron_ecs_role" {
   name  = "/${var.name}/iam/eventbridge-cron"
   type  = "String"
   value = aws_iam_role.cron_eventbridge.arn
+
+  tags = local.tags
 }

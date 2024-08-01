@@ -3,9 +3,9 @@ resource "aws_security_group" "efs" {
   description = "Default access for ECS to EFS"
   vpc_id      = module.vpc.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${var.name}-efs"
-  }
+  })
 }
 
 resource "aws_security_group_rule" "ecs_default_efs_out" {

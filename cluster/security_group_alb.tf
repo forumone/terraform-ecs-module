@@ -4,9 +4,9 @@ resource "aws_security_group" "alb" {
   description = "Security group for the ALB"
   vpc_id      = module.vpc.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${var.name}-alb"
-  }
+  })
 }
 
 resource "aws_security_group_rule" "alb_http_in_all" {

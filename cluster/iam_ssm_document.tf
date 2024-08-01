@@ -15,6 +15,8 @@ resource "aws_iam_role" "automation" {
   name = "${var.name}-SSM-Automation"
 
   assume_role_policy = data.aws_iam_policy_document.automation_assume.json
+
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "automation_ssm_ec2" {
@@ -100,6 +102,8 @@ resource "aws_iam_policy" "automation_ssm_ec2" {
   description = "Grants permission for Systems Manager to launch EC2 instances"
 
   policy = data.aws_iam_policy_document.automation_ssm_ec2.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "automation_ssm_ec2" {

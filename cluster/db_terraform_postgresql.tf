@@ -49,6 +49,7 @@ resource "aws_ecs_task_definition" "terraform_postgresql_database_exec" {
         { name = "BACKEND_STORAGE", value = module.s3_tfstate.s3_bucket_id },
         { name = "BACKEND_LOCKS", value = aws_dynamodb_table.terraform_locks.id },
         { name = "TF_VAR_cluster_name", value = module.ecs.cluster_name },
+        { name = "TF_VAR_tags", value = jsonencode(local.tags) },
       ]
 
       secrets = [
@@ -70,4 +71,6 @@ resource "aws_ecs_task_definition" "terraform_postgresql_database_exec" {
       }
     }
   ])
+
+  tags = local.tags
 }

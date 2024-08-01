@@ -9,6 +9,8 @@ resource "aws_route53_zone" "public" {
   name = "${var.name}.${var.dns.suffix}"
 
   comment = "Delegated from Infrastructure AWS account - Managed by Terraform"
+
+  tags = local.tags
 }
 
 resource "aws_route53_record" "public_ns" {

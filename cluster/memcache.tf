@@ -15,9 +15,9 @@ resource "aws_elasticache_cluster" "memcache" {
 
   port = 11211
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${var.name}-memcache"
-  }
+  })
 }
 
 # memcache default security group
@@ -26,6 +26,10 @@ resource "aws_security_group" "memcache" {
 
   name   = "${var.name}-memcache"
   vpc_id = module.vpc.vpc_id
+
+  tags = merge(local.tags, {
+    Name = "${var.name}-memcache"
+  })
 }
 
 # Allow ingress from ECS
@@ -60,7 +64,7 @@ resource "aws_ssm_parameter" "memcache_endpoint" {
   type        = "String"
   value       = aws_elasticache_cluster.memcache[0].configuration_endpoint
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_ssm_parameter" "memcache_nodes_endpoint" {
@@ -71,5 +75,5 @@ resource "aws_ssm_parameter" "memcache_nodes_endpoint" {
   type        = "StringList"
   value       = join(",", [for node in aws_elasticache_cluster.memcache[0].cache_nodes : "${node.address}:${node.port}"])
 
-  tags = var.tags
+  tags = local.tags
 }

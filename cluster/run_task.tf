@@ -1,7 +1,7 @@
 resource "aws_ecr_repository" "run_task" {
   name = "${var.name}/run-task"
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_ecr_lifecycle_policy" "run_task" {

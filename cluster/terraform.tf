@@ -26,7 +26,7 @@ module "s3_tfstate" {
     enabled = true
   }
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_dynamodb_table" "terraform_locks" {
@@ -44,5 +44,5 @@ resource "aws_dynamodb_table" "terraform_locks" {
     enabled = true
   }
 
-  tags = var.tags
+  tags = local.tags
 }

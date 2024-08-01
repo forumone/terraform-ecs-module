@@ -21,5 +21,7 @@ resource "aws_cloudwatch_log_group" "logs" {
 
   retention_in_days = var.cloudwatch_retention
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }

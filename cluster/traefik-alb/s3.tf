@@ -21,6 +21,8 @@ module "s3_traefik" {
       }
     }
   }
+
+  tags = var.tags
 }
 
 resource "aws_s3_object" "traefik_configuration" {
@@ -33,4 +35,6 @@ resource "aws_s3_object" "traefik_configuration" {
 
   source = var.configuration_file
   etag   = filemd5(var.configuration_file)
+
+  tags = var.tags
 }

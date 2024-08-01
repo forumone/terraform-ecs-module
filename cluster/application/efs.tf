@@ -68,11 +68,13 @@ module "efs" {
         }
       }
 
-      tags = var.tags
+      tags = merge(local.tags, {
+        "forumone:environment" = each.value.env
+      })
     }
   }
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_ssm_parameter" "efs_id" {
@@ -82,7 +84,7 @@ resource "aws_ssm_parameter" "efs_id" {
   type  = "String"
   value = module.efs[0].id
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_ssm_parameter" "efs_ap_id" {
@@ -92,5 +94,7 @@ resource "aws_ssm_parameter" "efs_ap_id" {
   type  = "String"
   value = module.efs[0].access_points[each.key].id
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }

@@ -60,7 +60,7 @@ resource "aws_ecs_task_definition" "backup_database_mysql" {
     name = "scratch"
   }
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_scheduler_schedule" "backup_database_mysql" {
@@ -90,6 +90,8 @@ resource "aws_scheduler_schedule" "backup_database_mysql" {
 
       task_count          = 1
       task_definition_arn = aws_ecs_task_definition.backup_database_mysql[0].arn
+
+      tags = local.tags
 
       network_configuration {
         subnets         = module.vpc.private_subnets

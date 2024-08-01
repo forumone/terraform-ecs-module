@@ -67,14 +67,10 @@ resource "aws_ssm_document" "files_export" {
             {
               ResourceType = "instance"
 
-              Tags = [
+              Tags = concat(local.tag_list, [
                 {
                   Key   = "Name"
                   Value = "EFS Export/{{ automation:EXECUTION_ID }}"
-                },
-                {
-                  Key   = "forumone:cluster"
-                  Value = var.name
                 },
                 {
                   Key   = "forumone:site"
@@ -84,7 +80,7 @@ resource "aws_ssm_document" "files_export" {
                   Key   = "forumone:environment"
                   Value = "{{ environment }}"
                 }
-              ]
+              ])
             }
           ]
         }
