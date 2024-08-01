@@ -66,6 +66,7 @@
 | <a name="input_https_port"></a> [https\_port](#input\_https\_port) | HTTPS port for Traefik to listen on | `number` | `443` | no |
 | <a name="input_image_repository"></a> [image\_repository](#input\_image\_repository) | Image repository from which to pull Traefik. Defaults to pulling from the Docker Hub | `string` | `"traefik"` | no |
 | <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Version tag of the Traefik container to use | `string` | `"latest"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to created resources | `map(string)` | `{}` | no |
 | <a name="input_task_cpu"></a> [task\_cpu](#input\_task\_cpu) | CPU allocation for the ECS task | `number` | `256` | no |
 | <a name="input_task_memory"></a> [task\_memory](#input\_task\_memory) | Memory allocation for the ECS task | `number` | `512` | no |
 | <a name="input_tls_policy"></a> [tls\_policy](#input\_tls\_policy) | TLS policy to apply to the HTTPS listener | `string` | `"ELBSecurityPolicy-TLS-1-2-2017-01"` | no |

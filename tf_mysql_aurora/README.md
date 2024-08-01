@@ -41,6 +41,7 @@ No modules.
 | <a name="input_mysql_credentials"></a> [mysql\_credentials](#input\_mysql\_credentials) | Username and password of the root MySQL user | <pre>object({<br>    username = string<br>    password = string<br>  })</pre> | n/a | yes |
 | <a name="input_mysql_host"></a> [mysql\_host](#input\_mysql\_host) | MySQL Host Name | `string` | n/a | yes |
 | <a name="input_mysql_port"></a> [mysql\_port](#input\_mysql\_port) | MySQL Host Port | `number` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
