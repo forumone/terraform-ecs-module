@@ -69,7 +69,7 @@ module "efs" {
       }
 
       tags = merge(local.tags, {
-        "forumone:environment" = each.value.env
+        "forumone:environment" = info.env
       })
     }
   }
