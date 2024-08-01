@@ -47,6 +47,11 @@ resource "aws_secretsmanager_secret" "db_credentials" {
   description = "Credentials for the Postgresql DB user ${each.key}"
 
   recovery_window_in_days = 0
+
+  tags = merge(var.tags, {
+    "forumone:site"        = each.value.name
+    "forumone:environment" = each.value.env
+  })
 }
 
 resource "aws_secretsmanager_secret_version" "credentials" {

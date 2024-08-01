@@ -17,6 +17,8 @@ resource "aws_iam_role" "automation_ec2" {
   name = "${var.name}-EC2-automation"
 
   assume_role_policy = data.aws_iam_policy_document.automation_ec2_assume.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_instance_profile" "automation_ec2" {
@@ -72,6 +74,8 @@ resource "aws_iam_policy" "automation_ec2_efs" {
   description = "Grants EFS mount permission to automated EC2 instances"
 
   policy = data.aws_iam_policy_document.automation_ec2_efs.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "automation_ec2_efs" {

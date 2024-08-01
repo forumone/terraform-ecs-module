@@ -37,7 +37,9 @@ resource "aws_service_discovery_service" "service" {
     failure_threshold = 1
   }
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }
 
 # Create an SSM parameter for the Cloud Map service ARN
@@ -48,5 +50,7 @@ resource "aws_ssm_parameter" "service" {
   type  = "String"
   value = aws_service_discovery_service.service[each.key].arn
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }

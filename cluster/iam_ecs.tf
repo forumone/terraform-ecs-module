@@ -20,7 +20,7 @@ resource "aws_iam_role" "ecs_default_task" {
   description        = "Default Execution Role for ECS Tasks"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 # Grant non-root EFS access through access points in this VPC
@@ -75,7 +75,7 @@ resource "aws_iam_policy" "ecs_search_access" {
   description = "Grants permission to manage data in Elasticsearch/OpenSearch in the ${var.name} cluster"
   policy      = data.aws_iam_policy_document.ecs_search_access[0].json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_search_access" {
@@ -91,7 +91,7 @@ resource "aws_iam_role" "ecs_default_exec" {
   description        = "Default Task Role for ECS Tasks"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_default_exec" {
@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "secrets_manager_read_only" {
     condition {
       test     = "Null"
       values   = ["true"]
-      variable = "aws:ResourceTag/f1-internal"
+      variable = "aws:ResourceTag/forumone:internal"
     }
   }
 }
@@ -120,6 +120,8 @@ data "aws_iam_policy_document" "secrets_manager_read_only" {
 resource "aws_iam_policy" "secrets_manager_read_only" {
   name   = "${var.name}-Task-SecretsAccess"
   policy = data.aws_iam_policy_document.secrets_manager_read_only.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "secrets_manager_read_only" {
@@ -141,6 +143,8 @@ data "aws_iam_policy_document" "parameter_store_read_only" {
 resource "aws_iam_policy" "parameter_store_read_only" {
   name   = "${var.name}-Task-ParameterAccess"
   policy = data.aws_iam_policy_document.parameter_store_read_only.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "parameter_store_read_only" {
@@ -163,6 +167,8 @@ data "aws_iam_policy_document" "env_read_only" {
 resource "aws_iam_policy" "env_read_only" {
   name   = "${var.name}-Task-S3EnvAcces"
   policy = data.aws_iam_policy_document.env_read_only.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "env_read_only" {
@@ -174,12 +180,16 @@ resource "aws_ssm_parameter" "ecs_default_task" {
   name  = "/${var.name}/iam/ecs-task"
   type  = "String"
   value = aws_iam_role.ecs_default_task.arn
+
+  tags = local.tags
 }
 
 resource "aws_ssm_parameter" "ecs_default_exec" {
   name  = "/${var.name}/iam/ecs-exec"
   type  = "String"
   value = aws_iam_role.ecs_default_exec.arn
+
+  tags = local.tags
 }
 
 # Grant access for tasks to write to cloud watch and create streams
@@ -202,6 +212,8 @@ data "aws_iam_policy_document" "cloudwatch_access" {
 resource "aws_iam_policy" "cloudwatch_access" {
   name   = "${var.name}-Task-cloudWatchAccess"
   policy = data.aws_iam_policy_document.cloudwatch_access.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_access" {

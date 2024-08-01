@@ -2,6 +2,10 @@ resource "aws_security_group" "automation_ec2" {
   name        = "${var.name}-automation-ec2"
   description = "Security group for automation EC2 instances"
   vpc_id      = module.vpc.vpc_id
+
+  tags = merge(local.tags, {
+    Name = "${var.name}-automation-ec2"
+  })
 }
 
 # HTTP outbound is allowed primarily because some RPM-based package managers

@@ -3,9 +3,9 @@ resource "aws_security_group" "backups" {
   description = "Supplementary security group for backups"
   vpc_id      = module.vpc.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${var.name}-backups"
-  }
+  })
 }
 
 resource "aws_security_group_rule" "backups_ssh_out" {

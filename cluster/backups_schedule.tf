@@ -16,6 +16,8 @@ data "aws_iam_policy_document" "events_backups_assume_role" {
 resource "aws_iam_role" "events_backups" {
   name               = "${var.name}-BackupsCron"
   assume_role_policy = data.aws_iam_policy_document.events_backups_assume_role.json
+
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "events_backups_pass_role" {
@@ -34,6 +36,8 @@ resource "aws_iam_policy" "events_backups_pass_role" {
   description = "Grants EventBridge permission to pass backup roles"
 
   policy = data.aws_iam_policy_document.events_backups_pass_role.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "events_backups_pass_role" {
@@ -55,6 +59,8 @@ data "aws_iam_policy_document" "events_backups_write_dead_letters" {
 resource "aws_iam_policy" "events_backups_write_dead_letters" {
   name   = "${var.name}-BackupsWriteDeadLetters"
   policy = data.aws_iam_policy_document.events_backups_write_dead_letters.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "events_backups_write_dead_letters" {
@@ -83,7 +89,7 @@ resource "aws_iam_policy" "events_backups_run_task" {
   name   = "${var.name}-BackupsRunTask"
   policy = data.aws_iam_policy_document.events_backups_run_task.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "events_backups_run_task" {

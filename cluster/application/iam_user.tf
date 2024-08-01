@@ -34,7 +34,9 @@ resource "aws_iam_user" "custom" {
 
   name = "${var.cluster_name}-${var.application.name}-${each.value.env}-${each.value.user}"
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }
 
 # Attach the boundary policy
@@ -59,7 +61,9 @@ resource "aws_secretsmanager_secret" "iam_credentials" {
   name        = "${local.directory_prefix}/${each.value.env}/iam/${each.value.user}/keys"
   description = "IAM access keys for the ${each.value.env}/${each.value.user} user"
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }
 
 resource "aws_secretsmanager_secret_version" "iam_credentials" {

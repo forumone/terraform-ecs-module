@@ -41,6 +41,7 @@ No modules.
 | <a name="input_postgresql_credentials"></a> [postgresql\_credentials](#input\_postgresql\_credentials) | Username and password of the root postgresql user | <pre>object({<br>    username = string<br>    password = string<br>  })</pre> | n/a | yes |
 | <a name="input_postgresql_host"></a> [postgresql\_host](#input\_postgresql\_host) | PostgreSQL Host Name | `string` | n/a | yes |
 | <a name="input_postgresql_port"></a> [postgresql\_port](#input\_postgresql\_port) | postgresql Host Port | `number` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 

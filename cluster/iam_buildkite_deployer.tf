@@ -19,7 +19,7 @@ resource "aws_iam_role" "buildkite_deployer" {
   name               = "${var.name}-BuildkiteDeployerRole"
   assume_role_policy = data.aws_iam_policy_document.buildkite_deployer_assume.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 # Policy: Manipulate ECS tasks, services, and auto scaling
@@ -117,7 +117,7 @@ resource "aws_iam_policy" "buildkite_deploy_ecs" {
   description = "Grants read/write access to ECS tasks, services, and autoscaling for the ${var.name} cluster"
   policy      = data.aws_iam_policy_document.buildkite_deploy_ecs.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "buildkite_deploy_ecs" {
@@ -142,7 +142,7 @@ resource "aws_iam_policy" "buildkite_deploy_pass_cron_role" {
   policy      = data.aws_iam_policy_document.buildkite_deploy_pass_cron_role.json
   description = "Grants permission for Buildkite deployments to pass necessary ECS-related roles"
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "buildkite_deploy_pass_cron_role" {
@@ -186,7 +186,7 @@ resource "aws_iam_policy" "buildkite_deployer_terraform" {
   description = "Grants permissions needed to perform Terraform deployments"
   policy      = data.aws_iam_policy_document.buildkite_deployer_terraform.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "buildkite_deployer_terraform" {
@@ -229,7 +229,7 @@ resource "aws_iam_policy" "buildkite_deployer_eventbridge" {
   policy      = data.aws_iam_policy_document.buildkite_deployer_eventbridge.json
   description = "Grants read/write access to EventBridge rules for Buildkite deployment jobs"
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "buildkite_deployer_eventbridge" {

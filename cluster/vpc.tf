@@ -40,6 +40,8 @@ module "vpc" {
   private_subnet_enable_dns64     = false
   database_subnet_enable_dns64    = false
   elasticache_subnet_enable_dns64 = false
+
+  tags = var.tags
 }
 
 module "endpoints" {
@@ -54,7 +56,9 @@ module "endpoints" {
       service_type    = "Gateway"
       route_table_ids = module.vpc.private_route_table_ids
 
-      tags = { Name = "s3-vpc-endpoint" }
+      tags = merge(local.tags, {
+        Name = "${var.name}-s3-vpc-endpoint"
+      })
     }
   }
 }
@@ -64,4 +68,6 @@ resource "aws_ssm_parameter" "private_subnets" {
   name  = "/${var.name}/vpc/private-subnets"
   type  = "StringList"
   value = join(",", module.vpc.private_subnets)
+
+  tags = local.tags
 }

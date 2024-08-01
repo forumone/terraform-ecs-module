@@ -37,7 +37,7 @@ module "nlb_log_bucket" {
     }
   ]
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_lb" "nlb" {
@@ -53,5 +53,5 @@ resource "aws_lb" "nlb" {
     enabled = true
   }
 
-  tags = var.tags
+  tags = local.tags
 }

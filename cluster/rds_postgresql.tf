@@ -21,7 +21,7 @@ module "postgresql" {
   apply_immediately   = true
   monitoring_interval = 5
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret" "postgresql_root_credentials" {
@@ -32,8 +32,8 @@ resource "aws_secretsmanager_secret" "postgresql_root_credentials" {
 
   recovery_window_in_days = 0
 
-  tags = merge(var.tags, {
-    "f1-internal" = "true"
+  tags = merge(local.tags, {
+    "forumone:internal" = "true"
   })
 }
 

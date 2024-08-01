@@ -18,4 +18,6 @@ module "application" {
   vpc_id                 = module.vpc.vpc_id
   vpc_private_subnets    = module.vpc.private_subnets
   vpc_availability_zones = module.vpc.azs
+
+  tags = local.tags
 }

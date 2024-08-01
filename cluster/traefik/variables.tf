@@ -125,3 +125,9 @@ variable "configuration_file" {
   type        = string
   default     = null
 }
+
+variable "tags" {
+  description = "Tags to apply to created resources"
+  type        = map(string)
+  default     = {}
+}

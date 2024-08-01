@@ -3,6 +3,8 @@ resource "aws_iam_role" "backups_exec" {
   description = "Role to execute the backups tasks"
 
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "backups_exec" {
@@ -31,6 +33,8 @@ resource "aws_iam_policy" "backups_credentials" {
   description = "Grants backups tasks access to their SSH key"
 
   policy = data.aws_iam_policy_document.backups_credentials.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "backups_credentials" {
@@ -43,6 +47,8 @@ resource "aws_iam_role" "backups_task" {
   description = "Role for the backups tasks"
 
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
+
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "backups_s3" {
@@ -61,6 +67,8 @@ resource "aws_iam_policy" "backups_s3" {
   description = "Grants permission to push backup objects to S3"
 
   policy = data.aws_iam_policy_document.backups_s3.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "backups_s3" {

@@ -24,6 +24,8 @@ module "traefik" {
   autoscaling_max = var.traefik.max_capacity
 
   cloudwatch_log_retention = var.logs.retention
+
+  tags = local.tags
 }
 
 # Traefik routing from behind an ALB
@@ -52,4 +54,6 @@ module "traefik_alb" {
   autoscaling_max = var.traefik.max_capacity
 
   cloudwatch_log_retention = var.logs.retention
+
+  tags = local.tags
 }

@@ -4,9 +4,9 @@ resource "aws_security_group" "traefik" {
   description = "Security group for the Traefik reverse proxy"
   vpc_id      = var.vpc_id
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.ecs_cluster_name}-traefik-alb"
-  }
+  })
 }
 
 resource "aws_security_group_rule" "traefik_https_egress" {

@@ -14,8 +14,10 @@ resource "aws_security_group" "custom" {
   vpc_id = var.vpc_id
   name   = "${var.cluster_name}-${var.application.name}-${each.value.env}-${each.value.sg}"
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name = "${var.cluster_name} ${var.application.name}: ${each.key}"
+
+    "forumone:environment" = each.value.env
   })
 }
 
@@ -26,5 +28,7 @@ resource "aws_ssm_parameter" "security_group" {
   type  = "String"
   value = aws_security_group.custom[each.key].id
 
-  tags = var.tags
+  tags = merge(local.tags, {
+    "forumone:environment" = each.value.env
+  })
 }

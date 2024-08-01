@@ -19,7 +19,7 @@ resource "aws_iam_role" "buildkite_builder" {
   name               = "${var.name}-BuildkiteBuilderRole"
   assume_role_policy = data.aws_iam_policy_document.buildkite_builder_assume.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "buildkite_ecr_push" {
@@ -59,7 +59,7 @@ resource "aws_iam_policy" "buildkite_ecr_push" {
   description = "Grants read/write access to the ECR repositories for the ${var.name} cluster"
   policy      = data.aws_iam_policy_document.buildkite_ecr_push.json
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "buildkite_ecr_push" {

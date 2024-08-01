@@ -5,4 +5,9 @@ locals {
   # Shared prefix for any directory-like structure (e.g., CloudWatch or
   # Parameter Store). Use this to avoid introducing potential copy/paste errors.
   directory_prefix = "/${var.cluster_name}/applications/${var.application.name}"
+
+  # Shared tags for all resources
+  tags = merge(var.tags, {
+    "forumone:site" = var.application.name
+  })
 }

@@ -13,7 +13,7 @@ resource "aws_cloudwatch_log_group" "opensearch" {
   name              = "/${var.name}/search/${each.value}"
   retention_in_days = var.logs.retention
 
-  tags = var.tags
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "opensearch_log_publish" {
@@ -43,7 +43,7 @@ resource "aws_security_group" "opensearch" {
 
   description = "Security group for Elasticsearch/OpenSearch domains"
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_security_group_rule" "opensearch_in" {
@@ -137,7 +137,7 @@ resource "aws_opensearch_domain" "opensearch" {
     }
   }
 
-  tags = var.tags
+  tags = local.tags
 
   depends_on = [aws_cloudwatch_log_resource_policy.opensearch_log_publish]
 }
@@ -149,5 +149,5 @@ resource "aws_ssm_parameter" "opensearch" {
   type  = "String"
   value = aws_opensearch_domain.opensearch[0].endpoint
 
-  tags = var.tags
+  tags = local.tags
 }

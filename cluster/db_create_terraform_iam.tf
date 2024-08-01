@@ -20,6 +20,8 @@ resource "aws_iam_role" "terraform_database_exec" {
   name               = "${var.name}-TerraformDatabaseExecution"
   description        = "Role to execute the Terraform-based database initialization"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_database_exec" {
@@ -32,6 +34,8 @@ resource "aws_iam_policy" "terraform_database_credentials_access" {
   name        = "${var.name}-TerraformDatabaseRootCredsAccess"
   description = "Allows binding the root RDS credentials to the Terraform database task"
   policy      = data.aws_iam_policy_document.terraform_database_credentials_access[0].json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_database_credentials_access" {
@@ -98,18 +102,24 @@ resource "aws_iam_policy" "terraform_database_tfstate_access" {
   name        = "${var.name}-TerraformDatabaseTFStateAccess"
   description = "Grants access to remote backend S3 bucket/tf_aurora_mysql.tfstate or tf_aurora_postgresql.tfstate"
   policy      = data.aws_iam_policy_document.terraform_database_tfstate_access.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_policy" "terraform_locks_access" {
   name        = "${var.name}-TerraformDatabaseTFLocksAccess"
   description = "Grants access to remote backend Dynamo DB Terraform Locks Table"
   policy      = data.aws_iam_policy_document.terraform_locks_access.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role" "terraform_database_task" {
   name               = "${var.name}-TerraformDatabaseTask"
   description        = "Role for the Terraform-based database initialization process"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_database_tfstate_access" {
@@ -174,6 +184,8 @@ data "aws_iam_policy_document" "aws_cloudwatch_event_policy" {
 resource "aws_iam_role" "db_scheduled_event_bridge" {
   name               = "${var.name}-terraform-event-bridge-run"
   assume_role_policy = data.aws_iam_policy_document.aws_cloudwatch_event_assume_role.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy" "scheduled_task_cw_event_role_cloudwatch_policy" {

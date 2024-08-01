@@ -34,7 +34,7 @@ module "s3_backups" {
     }
   ]
 
-  tags = var.tags
+  tags = local.tags
 }
 
 # Env file storage for ECS tasks
@@ -66,5 +66,5 @@ module "s3_env" {
     enabled = true
   }
 
-  tags = var.tags
+  tags = local.tags
 }
