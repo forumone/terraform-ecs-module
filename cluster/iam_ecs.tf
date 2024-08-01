@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "secrets_manager_read_only" {
     condition {
       test     = "Null"
       values   = ["true"]
-      variable = "aws:ResourceTag/f1-internal"
+      variable = "aws:ResourceTag/forumone:internal"
     }
   }
 }

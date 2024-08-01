@@ -37,7 +37,7 @@ resource "aws_secretsmanager_secret" "mysql_root_credentials" {
   recovery_window_in_days = 0
 
   tags = merge(local.tags, {
-    "f1-internal" = "true"
+    "forumone:internal" = "true"
   })
 }
 
