@@ -68,7 +68,7 @@ resource "aws_iam_role_policy_attachment" "events_backups_write_dead_letters" {
   policy_arn = aws_iam_policy.events_backups_write_dead_letters.arn
 }
 
-data "aws_iam_policy_document" "events_backups_run_task" {
+data "aws_iam_policy_document" "events_backups_ecs" {
   version = "2012-10-17"
 
   statement {
@@ -83,16 +83,29 @@ data "aws_iam_policy_document" "events_backups_run_task" {
       values   = [module.ecs.cluster_arn]
     }
   }
+
+  statement {
+    sid       = "tagTask"
+    effect    = "Allow"
+    actions   = ["ecs:TagResource"]
+    resources = ["*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ecs:CreateAction"
+      values   = ["RunTask"]
+    }
+  }
 }
 
-resource "aws_iam_policy" "events_backups_run_task" {
+resource "aws_iam_policy" "events_backups_ecs" {
   name   = "${var.name}-BackupsRunTask"
-  policy = data.aws_iam_policy_document.events_backups_run_task.json
+  policy = data.aws_iam_policy_document.events_backups_ecs.json
 
   tags = local.tags
 }
 
-resource "aws_iam_role_policy_attachment" "events_backups_run_task" {
+resource "aws_iam_role_policy_attachment" "events_backups_ecs" {
   role       = aws_iam_role.events_backups.name
-  policy_arn = aws_iam_policy.events_backups_run_task.arn
+  policy_arn = aws_iam_policy.events_backups_ecs.arn
 }
