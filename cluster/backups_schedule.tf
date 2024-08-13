@@ -99,7 +99,7 @@ data "aws_iam_policy_document" "events_backups_ecs" {
 }
 
 resource "aws_iam_policy" "events_backups_ecs" {
-  name   = "${var.name}-BackupsRunTask"
+  name   = "${var.name}-BackupsECS"
   policy = data.aws_iam_policy_document.events_backups_ecs.json
 
   tags = local.tags
