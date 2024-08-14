@@ -91,7 +91,8 @@ resource "aws_scheduler_schedule" "backup_database_mysql" {
       task_count          = 1
       task_definition_arn = aws_ecs_task_definition.backup_database_mysql[0].arn
 
-      tags = local.tags
+      # NB. No tags until https://github.com/hashicorp/terraform-provider-aws/pull/31331
+      # tags = local.tags
 
       network_configuration {
         subnets         = module.vpc.private_subnets
