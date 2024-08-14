@@ -121,9 +121,10 @@ resource "aws_scheduler_schedule" "backup_files" {
       task_count          = 1
       task_definition_arn = aws_ecs_task_definition.backup_files[each.key].arn
 
-      tags = merge(local.tags, {
-        "forumone:site" = each.key
-      })
+      # NB. No tags until https://github.com/hashicorp/terraform-provider-aws/pull/31331
+      # tags = merge(local.tags, {
+      #   "forumone:site" = each.key
+      # })
 
       network_configuration {
         subnets         = module.vpc.private_subnets
