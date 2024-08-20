@@ -21,7 +21,9 @@ module "postgresql" {
   apply_immediately   = true
   monitoring_interval = 5
 
-  tags = local.tags
+  tags                  = local.tags
+  cluster_tags          = local.tags
+  copy_tags_to_snapshot = true
 }
 
 resource "aws_secretsmanager_secret" "postgresql_root_credentials" {
