@@ -42,6 +42,8 @@ module "vpc" {
   elasticache_subnet_enable_dns64 = false
 
   tags = var.tags
+
+  nat_gateway_tags = var.tags
 }
 
 module "endpoints" {
