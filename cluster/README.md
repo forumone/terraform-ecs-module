@@ -30,7 +30,6 @@
 | <a name="module_s3_backups"></a> [s3\_backups](#module\_s3\_backups) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1 |
 | <a name="module_s3_env"></a> [s3\_env](#module\_s3\_env) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1  |
 | <a name="module_s3_tfstate"></a> [s3\_tfstate](#module\_s3\_tfstate) | terraform-aws-modules/s3-bucket/aws | ~> 4.0.1 |
-| <a name="module_traefik"></a> [traefik](#module\_traefik) | ./traefik | n/a |
 | <a name="module_traefik_alb"></a> [traefik\_alb](#module\_traefik\_alb) | ./traefik-alb | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.4 |
 
@@ -133,7 +132,6 @@
 | [aws_iam_role_policy_attachment.terraform_database_secrets_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.terraform_database_tfstate_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lb.alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
-| [aws_lb.nlb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_opensearch_domain.opensearch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearch_domain) | resource |
 | [aws_route53_record.nlb_ipv4](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.nlb_ipv6](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
@@ -178,10 +176,6 @@
 | [aws_security_group_rule.ecs_default_traefik_alb_in_extra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ecs_default_traefik_alb_out_80](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ecs_default_traefik_alb_out_extra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ecs_default_traefik_in_80](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ecs_default_traefik_in_extra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ecs_default_traefik_out_80](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ecs_default_traefik_out_extra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.efs_automation_ec2_in](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.efs_default_ecs_in](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.memcache_in](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -260,7 +254,7 @@
 | <a name="input_applications"></a> [applications](#input\_applications) | Application-specific configuration | <pre>list(object({<br>    name           = string<br>    environments   = map(list(string))<br>    containers     = list(string)<br>    acmSubdomain   = optional(bool, false)<br>    roles          = optional(list(string))<br>    users          = optional(list(string))<br>    buckets        = optional(list(string))<br>    services       = optional(list(string))<br>    logGroups      = optional(list(string))<br>    accessPoints   = optional(list(string))<br>    securityGroups = optional(list(string))<br><br>    databases = optional(object({<br>      mysql      = optional(list(string), [])<br>      postgresql = optional(list(string), [])<br>    }))<br>  }))</pre> | n/a | yes |
 | <a name="input_automation"></a> [automation](#input\_automation) | Automation configuration | <pre>object({<br>    transfer_bucket_name = string<br>    transfer_bucket_arn  = string<br>  })</pre> | n/a | yes |
 | <a name="input_buildkite"></a> [buildkite](#input\_buildkite) | Options indicating Buildkite roles for building/deploying | <pre>object({<br>    builders  = list(string)<br>    deployers = list(string)<br>  })</pre> | n/a | yes |
-| <a name="input_dns"></a> [dns](#input\_dns) | Options controlling public and private DNS | <pre>object({<br>    suffix          = string<br>    cloudmap        = bool<br>    wildcard_target = optional(string, "nlb")<br>  })</pre> | n/a | yes |
+| <a name="input_dns"></a> [dns](#input\_dns) | Options controlling public and private DNS | <pre>object({<br>    suffix   = string<br>    cloudmap = bool<br>  })</pre> | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the cluster. Used to uniquely identify all resources related to this cluster | `string` | n/a | yes |
 | <a name="input_rsync"></a> [rsync](#input\_rsync) | Options for remote backups via rsync | <pre>object({<br>    username    = string<br>    hostname    = string<br>    fingerprint = string<br>  })</pre> | n/a | yes |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | Options controlling VPC creation | <pre>object({<br>    cidr     = string<br>    az_count = number<br>  })</pre> | n/a | yes |

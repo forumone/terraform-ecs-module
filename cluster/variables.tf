@@ -31,9 +31,8 @@ variable "dns" {
   description = "Options controlling public and private DNS"
 
   type = object({
-    suffix          = string
-    cloudmap        = bool
-    wildcard_target = optional(string, "nlb")
+    suffix   = string
+    cloudmap = bool
   })
 }
 
