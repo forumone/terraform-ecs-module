@@ -19,7 +19,6 @@ definitions:
   modules: &modules
     - cluster
     - cluster/application
-    - cluster/traefik
     - cluster/traefik-alb
     - sso
     - tf_mysql_aurora

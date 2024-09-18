@@ -44,26 +44,6 @@ resource "aws_security_group_rule" "ecs_default_smtp_out" {
 }
 
 # Allow Traefik to communicate with tasks on port 80
-resource "aws_security_group_rule" "ecs_default_traefik_in_80" {
-  description              = "Ingress from Traefik to ECS (port 80)"
-  security_group_id        = aws_security_group.ecs.id
-  type                     = "ingress"
-  from_port                = 80
-  to_port                  = 80
-  protocol                 = "tcp"
-  source_security_group_id = module.traefik.security_group_id
-}
-
-resource "aws_security_group_rule" "ecs_default_traefik_out_80" {
-  description              = "Egress from Traefik to ECS (port 80)"
-  security_group_id        = module.traefik.security_group_id
-  type                     = "egress"
-  from_port                = 80
-  to_port                  = 80
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.ecs.id
-}
-
 resource "aws_security_group_rule" "ecs_default_traefik_alb_in_80" {
   description              = "Ingress from Traefik to ECS (port 80)"
   security_group_id        = aws_security_group.ecs.id
@@ -84,38 +64,11 @@ resource "aws_security_group_rule" "ecs_default_traefik_alb_out_80" {
   source_security_group_id = aws_security_group.ecs.id
 }
 
-# Allow Traefik to communicate with tasks on additional ports
-resource "aws_security_group_rule" "ecs_default_traefik_in_extra" {
+# Allow the ALB Traefik service to communicate with tasks on additional ports
+resource "aws_security_group_rule" "ecs_default_traefik_alb_in_extra" {
   # We can't toset() a list of numbers, so use zipmap() to force Terraform to
   # create a keyed map of ports (e.g., {"3000" = 3000}) so that we can for_each
   # over it.
-  for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
-
-  description = "Ingress from Traefik to ECS (port ${each.key})"
-
-  security_group_id        = aws_security_group.ecs.id
-  type                     = "ingress"
-  from_port                = each.value
-  to_port                  = each.value
-  protocol                 = "tcp"
-  source_security_group_id = module.traefik.security_group_id
-}
-
-resource "aws_security_group_rule" "ecs_default_traefik_out_extra" {
-  for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
-
-  description = "Egress from Traefik to ECS (port ${each.key})"
-
-  security_group_id        = module.traefik.security_group_id
-  type                     = "egress"
-  from_port                = each.value
-  to_port                  = each.value
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.ecs.id
-}
-
-# Allow the ALB Traefik service to communicate with tasks on additional ports
-resource "aws_security_group_rule" "ecs_default_traefik_alb_in_extra" {
   for_each = zipmap(var.networking.ingress_ports, var.networking.ingress_ports)
 
   description = "Ingress from Traefik to ECS (port ${each.key})"

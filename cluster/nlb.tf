@@ -1,5 +1,4 @@
-# Create S3 log bucket for NLB logs - use random string for unique S3 name
-
+# This log bucket needs to stay until downstream users have emptied it.
 module "nlb_log_bucket" {
   source                        = "terraform-aws-modules/s3-bucket/aws"
   version                       = "~> 4.0.1"
@@ -36,22 +35,6 @@ module "nlb_log_bucket" {
       ]
     }
   ]
-
-  tags = local.tags
-}
-
-resource "aws_lb" "nlb" {
-  name                       = var.name
-  enable_deletion_protection = false
-  load_balancer_type         = "network"
-  ip_address_type            = "dualstack"
-  subnets                    = module.vpc.public_subnets
-
-  access_logs {
-    bucket  = module.nlb_log_bucket.s3_bucket_id
-    prefix  = "logs"
-    enabled = true
-  }
 
   tags = local.tags
 }

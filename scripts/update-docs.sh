@@ -7,7 +7,6 @@ readonly paths=(
   sso
   cluster
   cluster/application
-  cluster/traefik
   cluster/traefik-alb
   tf_mysql_aurora
   tf_postgresql_aurora
