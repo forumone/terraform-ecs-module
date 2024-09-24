@@ -274,7 +274,9 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_automation_documents"></a> [automation\_documents](#output\_automation\_documents) | ARN(s) of documents used for SSM automation |
 | <a name="output_automation_policy"></a> [automation\_policy](#output\_automation\_policy) | Name of the Systems Manager automation policy |
+| <a name="output_automation_roles"></a> [automation\_roles](#output\_automation\_roles) | ARN(s) of the roles used for SSM automation |
 | <a name="output_availability_zones"></a> [availability\_zones](#output\_availability\_zones) | List of availability zones |
 | <a name="output_buildkite_builder"></a> [buildkite\_builder](#output\_buildkite\_builder) | ARN of the Docker builder role for Buildkite to assume |
 | <a name="output_buildkite_deployer"></a> [buildkite\_deployer](#output\_buildkite\_deployer) | ARN of the Terraform deployment role for Buildkite to assume |
