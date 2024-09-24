@@ -158,3 +158,19 @@ output "postgresql_security_group_id" {
   description = "ID of the security group for the PostgreSQL database"
   value       = try(module.postgresql[0].security_group_id, null)
 }
+
+output "automation_roles" {
+  description = "ARN(s) of the roles used for SSM automation"
+  value       = [aws_iam_role.automation.arn]
+}
+
+output "automation_documents" {
+  description = "ARN(s) of documents used for SSM automation"
+
+  value = [
+    aws_ssm_document.files_export.arn,
+    aws_ssm_document.files_import.arn,
+    aws_ssm_document.mysql_export.arn,
+    aws_ssm_document.mysql_import.arn,
+  ]
+}

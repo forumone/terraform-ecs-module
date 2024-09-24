@@ -45,6 +45,16 @@ variable "task_role_arns" {
   default     = []
 }
 
+variable "automation_role_arns" {
+  description = "ARN(s) of automation roles for this cluster"
+  type        = list(string)
+}
+
+variable "automation_document_arns" {
+  description = "ARN(s) of SSM automation documents used in this cluster"
+  type        = list(string)
+}
+
 variable "permission_set_name" {
   description = "Name of the permission set (visible in the AWS SSO console)"
   type        = string
