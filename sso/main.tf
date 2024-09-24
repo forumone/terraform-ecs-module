@@ -88,6 +88,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "s3" {
     name = aws_iam_policy.s3_access.name
     path = aws_iam_policy.s3_access.path
   }
+
   provider = aws.main
 }
 
@@ -100,11 +101,25 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "ecs" {
     name = aws_iam_policy.ecs_access.name
     path = aws_iam_policy.ecs_access.path
   }
+
   provider = aws.main
 }
 
-# In order to run tasks in the cluster(s), developers will need to pass
-# ECS-related roles
+# Developers also need access to SSM automation documents for self-service data
+# migration and exports
+resource "aws_ssoadmin_customer_managed_policy_attachment" "automation" {
+  instance_arn       = aws_ssoadmin_permission_set.this.instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.this.arn
+
+  customer_managed_policy_reference {
+    name = aws_iam_policy.automation_access.name
+    path = aws_iam_policy.automation_access.path
+  }
+
+  provider = aws.main
+}
+
+# Allow passing ECS and SSM automation roles to various services
 resource "aws_ssoadmin_customer_managed_policy_attachment" "iam" {
   instance_arn       = aws_ssoadmin_permission_set.this.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this.arn
@@ -113,6 +128,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "iam" {
     name = aws_iam_policy.ecs_pass_role.name
     path = aws_iam_policy.ecs_pass_role.path
   }
+
   provider = aws.main
 }
 

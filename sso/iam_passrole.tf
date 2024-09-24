@@ -6,7 +6,8 @@ data "aws_iam_policy_document" "ecs_pass_role" {
     effect  = "Allow"
     actions = ["iam:PassRole"]
 
-    resources = var.task_role_arns
+    # TODO: limit on iam:PassedToService conditions
+    resources = concat(var.task_role_arns, var.automation_role_arns)
   }
 }
 
