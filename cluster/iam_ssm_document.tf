@@ -95,6 +95,14 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     actions   = ["iam:PassRole"]
     resources = [aws_iam_role.automation_ec2.arn]
   }
+
+  # Allow fetching public AWS AMI parameters
+  statement {
+    sid       = "PublicParameters"
+    effect    = "Allow"
+    actions   = ["ssm:GetParameter", "ssm:GetParameters"]
+    resources = ["arn:aws:ssm:${data.aws_region.current.name}::parameter/aws/service/ami-amazon-linux-latest/*"]
+  }
 }
 
 resource "aws_iam_policy" "automation_ssm_ec2" {
