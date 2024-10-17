@@ -22,30 +22,30 @@ resource "aws_iam_role" "automation" {
 data "aws_iam_policy_document" "automation_ssm_ec2" {
   version = "2012-10-17"
 
-  # Restrict AMI selection to just official AMIs; intended mostly to use
+  # Restrict AMI selection to just official AMIs
   statement {
-    sid       = "OnlyAllowAmazonAMIs"
-    effect    = "Deny"
+    sid       = "RunAmazonAMIs"
+    effect    = "Allow"
     actions   = ["ec2:RunInstances"]
     resources = ["arn:aws:ec2:*:*:image/ami-*"]
 
     condition {
-      test     = "StringNotEquals"
+      test     = "StringEquals"
       variable = "ec2:Owner"
       values   = ["amazon"]
     }
   }
 
   statement {
-    sid       = "BanPublicIPs"
-    effect    = "Deny"
+    sid       = "LaunchPrivateInstances"
+    effect    = "Allow"
     actions   = ["ec2:RunInstances"]
     resources = ["arn:aws:ec2:*:*:network-interface/*"]
 
     condition {
       test     = "Bool"
       variable = "ec2:AssociatePublicIp"
-      values   = ["true"]
+      values   = ["false"]
     }
   }
 
