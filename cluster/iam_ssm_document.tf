@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     resources = ["arn:aws:ec2:*:*:network-interface/*"]
 
     condition {
-      test     = "Bool"
+      test     = "BoolIfExists"
       variable = "ec2:AssociatePublicIp"
       values   = ["false"]
     }
