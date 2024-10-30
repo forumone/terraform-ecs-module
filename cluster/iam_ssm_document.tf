@@ -71,6 +71,7 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     resources = [
       "arn:aws:ec2:*:*:instance/*",
       "arn:aws:ec2:*:*:key-pair/*",
+      "arn:aws:ec2:*:*:volume/*",
     ]
   }
 
