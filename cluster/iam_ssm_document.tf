@@ -104,6 +104,13 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     actions   = ["ssm:GetParameter", "ssm:GetParameters"]
     resources = ["arn:aws:ssm:${data.aws_region.current.name}::parameter/aws/service/ami-amazon-linux-latest/*"]
   }
+
+  statement {
+    sid       = "DescribeInstances"
+    effect    = "Allow"
+    actions   = ["ec2:DescribeInstances"]
+    resources = ["arn:aws:ec2:*:${data.aws_caller_identity.current.account_id}:instance/*"]
+  }
 }
 
 resource "aws_iam_policy" "automation_ssm_ec2" {
