@@ -113,6 +113,13 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
   }
 
   statement {
+    sid       = "DescribeInstanceStatus"
+    effect    = "Allow"
+    actions   = ["ec2:DescribeInstanceStatus"]
+    resources = ["arn:aws:ec2:*:${data.aws_caller_identity.current.account_id}:instance/*"]
+  }
+
+  statement {
     sid       = "TerminateInstances"
     effect    = "Allow"
     actions   = ["ec2:TerminateInstances"]
