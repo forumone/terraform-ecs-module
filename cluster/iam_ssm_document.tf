@@ -116,7 +116,7 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     sid       = "DescribeInstanceStatus"
     effect    = "Allow"
     actions   = ["ec2:DescribeInstanceStatus"]
-    resources = ["arn:aws:ec2:*:${data.aws_caller_identity.current.account_id}:instance/*"]
+    resources = ["*"]
   }
 
   statement {
