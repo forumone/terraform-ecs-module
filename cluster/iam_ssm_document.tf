@@ -125,6 +125,13 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
     actions   = ["ec2:TerminateInstances"]
     resources = ["arn:aws:ec2:*:${data.aws_caller_identity.current.account_id}:instance/*"]
   }
+
+  statement {
+    sid       = "RunCommand"
+    effect    = "Allow"
+    actions   = ["ssm:RunCommand"]
+    resources = ["arn:aws:ssm:*:*:document/*"]
+  }
 }
 
 resource "aws_iam_policy" "automation_ssm_ec2" {
