@@ -103,6 +103,7 @@ resource "aws_ssm_document" "files_import" {
 
         inputs = {
           DocumentName = "AWS-RunShellScript"
+          InstanceIds  = "{{ Startup.InstanceIds }}"
 
           Parameters = {
             commands = [

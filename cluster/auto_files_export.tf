@@ -96,6 +96,7 @@ resource "aws_ssm_document" "files_export" {
 
         inputs = {
           DocumentName = "AWS-RunShellScript"
+          InstanceIds  = "{{ Startup.InstanceIds }}"
 
           Parameters = {
             commands = [

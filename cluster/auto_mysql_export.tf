@@ -97,6 +97,7 @@ resource "aws_ssm_document" "mysql_export" {
 
         inputs = {
           DocumentName = "AWS-RunShellScript"
+          InstanceIds  = "{{ Startup.InstanceIds }}"
 
           Parameters = {
             commands = [
