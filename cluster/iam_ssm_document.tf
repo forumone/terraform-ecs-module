@@ -127,9 +127,9 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
   }
 
   statement {
-    sid       = "RunCommand"
+    sid       = "SendCommand"
     effect    = "Allow"
-    actions   = ["ssm:RunCommand"]
+    actions   = ["ssm:SendCommand"]
     resources = ["arn:aws:ssm:*:*:document/*"]
   }
 }
