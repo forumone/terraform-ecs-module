@@ -129,7 +129,7 @@ data "aws_iam_policy_document" "automation_ssm_ec2" {
   statement {
     sid       = "SendCommand"
     effect    = "Allow"
-    actions   = ["ssm:SendCommand"]
+    actions   = ["ssm:SendCommand", "ssm:DescribeInstanceInformation"]
     resources = ["*"]
   }
 }
