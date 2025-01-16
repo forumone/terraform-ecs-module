@@ -104,6 +104,7 @@ resource "aws_ssm_document" "mysql_import" {
 
         inputs = {
           DocumentName = "AWS-RunShellScript"
+          InstanceIds  = "{{ Startup.InstanceIds }}"
 
           Parameters = {
             commands = [
