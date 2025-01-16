@@ -94,3 +94,9 @@ resource "aws_iam_role_policy_attachment" "automation_ec2_parameter_store" {
 
   policy_arn = aws_iam_policy.parameter_store_read_only.arn
 }
+
+resource "aws_iam_role_policy_attachment" "automation_ec2_ssm_managed_instance" {
+  role = aws_iam_role.automation_ec2.name
+
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}

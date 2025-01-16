@@ -49,10 +49,11 @@ resource "aws_ssm_document" "mysql_export" {
         nextStep  = "RunCommandOnInstances"
 
         inputs = {
-          ImageId          = "{{ zzzInstanceAmiId }}"
-          InstanceType     = "t3a.medium"
-          SubnetId         = module.vpc.private_subnets[0]
-          SecurityGroupIds = [aws_security_group.automation_ec2.id]
+          ImageId               = "{{ zzzInstanceAmiId }}"
+          InstanceType          = "t3a.medium"
+          SubnetId              = module.vpc.private_subnets[0]
+          SecurityGroupIds      = [aws_security_group.automation_ec2.id]
+          IamInstanceProfileArn = aws_iam_instance_profile.automation_ec2.arn
 
           BlockDeviceMappings = [
             {
