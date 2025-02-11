@@ -112,10 +112,10 @@ resource "aws_ssm_document" "mysql_export" {
               # Convert Secrets Manager credentials into regular-flavor MySQL configuration
               "aws --region=${data.aws_region.current.name} secretsmanager get-secret-value --secret-id=/${var.name}/{{ site }}/{{ environment }}/{{ database }} >cred.json",
               "echo '[client]' >/etc/my.cnf",
-              "echo -n 'host=' && jq -r '.SecretString' cred.json | jq -r .host >>/etc/my.cnf",
-              "echo -n 'port=' && jq -r '.SecretString' cred.json | jq -r .port >>/etc/my.cnf",
-              "echo -n 'user=' && jq -r '.SecretString' cred.json | jq -r .user >>/etc/my.cnf",
-              "echo -n 'password=' && jq -r '.SecretString' cred.json | jq -r .password >>/etc/my.cnf",
+              "echo -n 'host=' && jq -r '.SecretString.host' cred.json >>/etc/my.cnf",
+              "echo -n 'port=' && jq -r '.SecretString.port' cred.json >>/etc/my.cnf",
+              "echo -n 'user=' && jq -r '.SecretString.user' cred.json >>/etc/my.cnf",
+              "echo -n 'password=' && jq -r '.SecretString.password' cred.json >>/etc/my.cnf",
 
               # Run `mysqldump` against the DB
               "docker run --rm -it -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysqldump --set-gtid-purged=OFF --no-tablespaces {{ site }}-{{ environment }}-{{ database }} >dump.sql",
