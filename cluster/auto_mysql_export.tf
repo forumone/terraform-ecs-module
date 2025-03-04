@@ -116,7 +116,7 @@ resource "aws_ssm_document" "mysql_export" {
               "echo -n 'port=' && jq -r '.SecretString' cred.json | jq -r .port >>/etc/my.cnf",
               "echo -n 'user=' && jq -r '.SecretString' cred.json | jq -r .user >>/etc/my.cnf",
               "echo -n 'password=' && jq -r '.SecretString' cred.json | jq -r .password >>/etc/my.cnf",
-              "cat /etc/my.cnf"
+              "cat /etc/my.cnf",
 
               # Run `mysqldump` against the DB
               "docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 echo 'mysqldump --set-gtid-purged=OFF --no-tablespaces {{ site }}-{{ environment }}-{{ database }} >dump.sql'",
