@@ -119,10 +119,10 @@ resource "aws_ssm_document" "mysql_import" {
               # Convert Secrets Manager credentials into regular-flavor MySQL configuration
               "aws --region=${data.aws_region.current.name} secretsmanager get-secret-value --secret-id=/${var.name}/{{ site }}/{{ environment }}/{{ database }} >cred.json",
               "echo '[client]' >/etc/my.cnf",
-              "jq -r \"host=\\(.host)\" >>/etc/my.cnf",
-              "jq -r \"port=\\(.port)\" >>/etc/my.cnf",
-              "jq -r \"user=\\(.username)\" >>/etc/my.cnf",
-              "jq -r \"password=\\(.password)\" >>/etc/my.cnf",
+              "echo 'host=\"'$(cat cred.json | jq -r .SecretString | jq -r .host)'\"' >>/etc/my.cnf",
+              "echo 'port=\"'$(cat cred.json | jq -r .SecretString | jq -r .port)'\"' >>/etc/my.cnf",
+              "echo 'user=\"'$(cat cred.json | jq -r .SecretString | jq -r .username)'\"' >>/etc/my.cnf",
+              "echo 'password=\"'$(cat cred.json | jq -r .SecretString | jq -r .password)'\"' >>/etc/my.cnf",
 
               # Download and decompress dump
               "aws s3 cp s3://${var.automation.transfer_bucket_name}/{{ importKey }}.sql.gz dump.sql.gz",
