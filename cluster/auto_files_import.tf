@@ -128,7 +128,7 @@ resource "aws_ssm_document" "files_import" {
 
               # Unpack files to a subdirectory of /tmp
               "mkdir /tmp/files",
-              "tar zxf files.tar -C /tmp/files",
+              "tar zxf files.tar.gz -C /tmp/files",
 
               # Run rsync recursively (ignoring ownership)
               "rsync --archive $delete --no-owner /tmp/files /mnt/efs/{{ environment }}/{{subdirectory }}/"
