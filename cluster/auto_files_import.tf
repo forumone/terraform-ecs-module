@@ -131,7 +131,7 @@ resource "aws_ssm_document" "files_import" {
               "tar zxf files.tar.gz -C /tmp/files",
 
               # Run rsync recursively (ignoring ownership)
-              "rsync --archive $delete --no-owner /tmp/files /mnt/efs/{{ environment }}/{{subdirectory }}/"
+              "rsync --archive $delete --no-owner /tmp/files/ /mnt/efs/{{ environment }}/{{subdirectory }}/"
             ]
 
             workingDirectory = "/tmp"
