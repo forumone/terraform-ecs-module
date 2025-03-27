@@ -137,16 +137,16 @@ resource "aws_ssm_document" "files_import" {
             workingDirectory = "/tmp"
           }
         }
-        },
-        {
-          name   = "Cleanup"
-          action = "aws:changeInstanceState"
+      },
+      {
+        name   = "Cleanup"
+        action = "aws:changeInstanceState"
 
-          isEnd = true
+        isEnd = true
 
         inputs = {
-        DesiredState = "stopped"
-        InstanceIds  = "{{ Startup.InstanceIds }}"
+          DesiredState = "stopped"
+          InstanceIds  = "{{ Startup.InstanceIds }}"
         }
       }
     ]
