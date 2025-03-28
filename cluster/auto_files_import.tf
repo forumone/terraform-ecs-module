@@ -145,7 +145,7 @@ resource "aws_ssm_document" "files_import" {
         isEnd = true
 
         inputs = {
-          DesiredState = "stopped"
+          DesiredState = "terminated"
           InstanceIds  = "{{ Startup.InstanceIds }}"
         }
       }
