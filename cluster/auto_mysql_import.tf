@@ -130,13 +130,13 @@ resource "aws_ssm_document" "mysql_import" {
 
               # If we were asked to drop tables before import, then drop them here
               "if test \"{{ dropBeforeImport }}\" = true; then",
-              "  docker run --rm -it -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysqlshow \"{{ site }}-{{ environment }}-{{ database }}\" | while read line; do",
-              "    docker run --rm -it -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch --execute \"DROP TABLE $line\"",
+              "  docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysqlshow \"{{ site }}-{{ environment }}-{{ database }}\" | while read line; do",
+              "    docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch --execute \"DROP TABLE $line\"",
               "  done",
               "fi",
 
               # Run `mysqldump` against the DB
-              "docker run --rm -it -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch \"{{ site }}-{{ environment }}-{{ database }}\" <dump.sql",
+              "docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch \"{{ site }}-{{ environment }}-{{ database }}\" <dump.sql",
             ]
 
             workingDirectory = "/tmp"
