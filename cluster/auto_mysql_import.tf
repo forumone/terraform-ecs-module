@@ -110,11 +110,11 @@ resource "aws_ssm_document" "mysql_import" {
           Parameters = {
             commands = [
               # Add necessary packages
-              "dnf install -y docker jq",
-              "systemctl start docker.service",
+              "dnf install -y jq mariadb105",
+              # "systemctl start docker.service",
 
               # Download the MySQL 8.0 Docker image
-              "docker pull -q mysql:8.0",
+              # "docker pull -q mysql:8.0",
 
               # Convert Secrets Manager credentials into regular-flavor MySQL configuration
               "aws --region=${data.aws_region.current.name} secretsmanager get-secret-value --secret-id=/${var.name}/{{ site }}/{{ environment }}/{{ database }} >cred.json",
@@ -129,14 +129,17 @@ resource "aws_ssm_document" "mysql_import" {
               "gunzip dump.sql.gz",
 
               # If we were asked to drop tables before import, then drop them here
-              "if test \"{{ dropBeforeImport }}\" = true; then",
-              "  docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysqlshow \"{{ site }}-{{ environment }}-{{ database }}\" | while read line; do",
-              "    docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch --execute \"DROP TABLE $line\"",
-              "  done",
-              "fi",
+              # "if test \"{{ dropBeforeImport }}\" = true; then",
+              # "  docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysqlshow \"{{ site }}-{{ environment }}-{{ database }}\" | while read line; do",
+              # "    docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch --execute \"DROP TABLE $line\"",
+              # "  done",
+              # "fi",
 
               # Run `mysqldump` against the DB
-              "docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch \"{{ site }}-{{ environment }}-{{ database }}\" <dump.sql",
+              "mysql --batch \"{{ site }}-{{ environment }}-{{ database }}\" <dump.sql",
+
+              # uncertain why docker run does not work
+              # "docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch \"{{ site }}-{{ environment }}-{{ database }}\" <dump.sql",
             ]
 
             workingDirectory = "/tmp"
