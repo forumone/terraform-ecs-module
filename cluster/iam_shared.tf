@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "automation_access" {
   statement {
     sid       = "executionReadAccess"
     effect    = "Allow"
-    actions   = ["ssm:GetAutomationExecution"]
+    actions   = ["ssm:GetAutomationExecution", "ssm:GetParameters"]
     resources = ["*"]
   }
 
