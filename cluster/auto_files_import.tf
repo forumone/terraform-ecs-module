@@ -110,18 +110,14 @@ resource "aws_ssm_document" "files_import" {
             commands = [
               # Add necessary packages
               "dnf install -y amazon-efs-utils",
-              "echo HELLO1",
 
               # Download the files tarball
               "aws s3 cp s3://${var.automation.transfer_bucket_name}/{{ importKey }}.tar.gz files.tar.gz",
-              "echo HELLO2",
 
               # Mount the EFS file system
               "fsid=\"$(aws --region=${data.aws_region.current.name} ssm get-parameter --name=\"/${var.name}/applications/{{ site }}/efs/filesystem\" --query=Parameter.Value --out=text)\"",
-              "echo HELLO3",
               "mkdir -p /mnt/efs",
               "mount -t efs -o tls,iam $fsid /mnt/efs",
-              "echo HELLO4",
 
               # Set up rsync flags doing file export
               # "if test \"{{ deleteOnSync }}\" = true; then delete=--delete; else delete=",
