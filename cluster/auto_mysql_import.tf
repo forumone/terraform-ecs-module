@@ -153,7 +153,7 @@ resource "aws_ssm_document" "mysql_import" {
         isEnd = true
 
         inputs = {
-          DesiredState = "stopped"
+          DesiredState = "terminated"
           InstanceIds  = "{{ Startup.InstanceIds }}"
         }
       }
