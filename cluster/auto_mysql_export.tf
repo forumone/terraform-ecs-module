@@ -60,7 +60,7 @@ resource "aws_ssm_document" "mysql_export" {
               DeviceName = "/dev/xvda"
 
               Ebs = {
-                VolumeSize = 4096
+                VolumeSize = 512
               }
             }
           ]
@@ -127,7 +127,7 @@ resource "aws_ssm_document" "mysql_export" {
               "aws s3 cp dump.sql.gz s3://${var.automation.transfer_bucket_name}/{{ exportKey }}.sql.gz"
             ]
 
-            workingDirectory = "/tmp"
+            workingDirectory = "/var/tmp"
           }
         }
       },
