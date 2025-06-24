@@ -32,7 +32,7 @@ resource "aws_ssm_document" "files_export" {
 
       zzzInstanceAmiId = {
         type        = "String"
-        default     = "{{ ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64 }}"
+        default     = "{{ ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64 }}"
         description = "Ignore this parameter; it is used to load the latest Amazon Linux 2023 AMI from AWS."
       }
     }
@@ -59,7 +59,7 @@ resource "aws_ssm_document" "files_export" {
               DeviceName = "/dev/xvda"
 
               Ebs = {
-                VolumeSize = 512
+                VolumeSize = 4096
               }
             }
           ]
