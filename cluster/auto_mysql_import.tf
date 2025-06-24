@@ -67,7 +67,7 @@ resource "aws_ssm_document" "mysql_import" {
               DeviceName = "/dev/xvda"
 
               Ebs = {
-                VolumeSize = 4096
+                VolumeSize = 512
               }
             }
           ]
@@ -142,7 +142,7 @@ resource "aws_ssm_document" "mysql_import" {
               # "docker run --rm -v /etc/my.cnf:/etc/my.cnf:ro mysql:8.0 mysql --batch \"{{ site }}-{{ environment }}-{{ database }}\" <dump.sql",
             ]
 
-            workingDirectory = "/tmp"
+            workingDirectory = "/var/tmp"
           }
         }
       },

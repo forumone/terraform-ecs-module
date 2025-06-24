@@ -59,7 +59,7 @@ resource "aws_ssm_document" "files_export" {
               DeviceName = "/dev/xvda"
 
               Ebs = {
-                VolumeSize = 16384
+                VolumeSize = 512
               }
             }
           ]
@@ -116,7 +116,7 @@ resource "aws_ssm_document" "files_export" {
               "aws s3 cp files.tar.gz s3://${var.automation.transfer_bucket_name}/{{ exportKey }}.tar.gz",
             ]
 
-            workingDirectory = "/tmp"
+            workingDirectory = "/var/tmp"
           }
         }
       },

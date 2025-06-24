@@ -66,7 +66,7 @@ resource "aws_ssm_document" "files_import" {
               DeviceName = "/dev/xvda"
 
               Ebs = {
-                VolumeSize = 16384
+                VolumeSize = 512
               }
             }
           ]
@@ -122,17 +122,17 @@ resource "aws_ssm_document" "files_import" {
               # Set up rsync flags doing file export
               # "if test \"{{ deleteOnSync }}\" = true; then delete=--delete; else delete=",
 
-              # Unpack files to a subdirectory of /tmp
-              "mkdir /tmp/files",
-              "tar zxf files.tar.gz -C /tmp/files",
+              # Unpack files to a subdirectory of /var/tmp
+              "mkdir /var/tmp/files",
+              "tar zxf files.tar.gz -C /var/tmp/files",
 
               # Run rsync recursively (ignoring ownership)
               "chown -R ec2-user:ec2-user /mnt/efs/{{ environment }}/{{subdirectory }}/",
-              "rsync --archive $delete --no-owner /tmp/files/ /mnt/efs/{{ environment }}/{{subdirectory }}/",
+              "rsync --archive $delete --no-owner /var/tmp/files/ /mnt/efs/{{ environment }}/{{subdirectory }}/",
               "chown -R ec2-user:ec2-user /mnt/efs/{{ environment }}/{{subdirectory }}/"
             ]
 
-            workingDirectory = "/tmp"
+            workingDirectory = "/var/tmp"
           }
         }
       },
