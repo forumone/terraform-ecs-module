@@ -66,7 +66,7 @@ resource "aws_ssm_document" "files_import" {
               DeviceName = "/dev/xvda"
 
               Ebs = {
-                VolumeSize = 512
+                VolumeSize = 4096
               }
             }
           ]
