@@ -113,6 +113,7 @@ resource "aws_ssm_document" "files_import" {
 
               # Download the files tarball
               "aws s3 cp s3://${var.automation.transfer_bucket_name}/{{ importKey }}.tar.gz files.tar.gz",
+              "if [! -f files.tar.gz]; then echo 'Error downloading files archive' && exit 1",
 
               # Mount the EFS file system
               "fsid=\"$(aws --region=${data.aws_region.current.name} ssm get-parameter --name=\"/${var.name}/applications/{{ site }}/efs/filesystem\" --query=Parameter.Value --out=text)\"",
