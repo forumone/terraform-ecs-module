@@ -48,7 +48,7 @@ for dir in /mnt/filesystem/*; do
   fi
 
   echo "[INFO] Creating tarball of $env from EFS"
-  if ! tar -czf "$nightly_tar" -C "$dir" . --warning=no-file-changed; then
+  if ! tar -cvzf "$nightly_tar" -C "$dir" . --warning=no-file-changed; then
     ok=
     continue
   fi
