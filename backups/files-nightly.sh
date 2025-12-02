@@ -48,13 +48,13 @@ for dir in /mnt/filesystem/*; do
   fi
 
   echo "[INFO] Creating tarball of $env from EFS"
-  if ! tar -cvzf "$nightly_tar" -C "$dir" . --warning=no-file-changed; then
+  if ! tar -czf "$nightly_tar" -C "$dir" . --warning=no-file-changed; then
     ok=
     continue
   fi
 
   echo "[INFO] Uploading tarball of $env to S3"
-  if ! aws s3 mv --only-show-errors "$nightly_tar" "s3://$BACKUPS_BUCKET/files/$BACKUPS_SITE/$timestamp/$env.tar.gz"; then
+  if ! aws s3 mv "$nightly_tar" "s3://$BACKUPS_BUCKET/files/$BACKUPS_SITE/$timestamp/$env.tar.gz"; then
     ok=
     continue
   fi
