@@ -66,3 +66,24 @@ resource "aws_iam_role_policy_attachment" "buildkite_ecr_push" {
   role       = aws_iam_role.buildkite_builder.name
   policy_arn = aws_iam_policy.buildkite_ecr_push.arn
 }
+
+
+locals {
+  buildkite_s3_policies = {
+    for pair in flatten([
+      for app_name, application in module.application : [
+        for bucket_key, policy_arn in application.s3_bucket_policies : {
+          key        = "${app_name}/${bucket_key}"
+          policy_arn = policy_arn
+        }
+      ]
+    ]) : pair.key => pair.policy_arn
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "buildkite_s3_access" {
+  for_each = local.buildkite_s3_policies
+
+  role       = aws_iam_role.buildkite_builder.name
+  policy_arn = each.value
+}
