@@ -157,24 +157,29 @@ variable "github_actions" {
     GitHub Actions workflows allowed to build and deploy for this cluster. Creates a role they
     can assume through the account's GitHub OIDC provider (oidc_provider_arn; there is one per
     account, so create it outside this module), which the builder and deployer roles trust.
-    Subjects are full OIDC `sub` claims, matched exactly, e.g.
-    "repo:forumone/example:ref:refs/heads/main" or "repo:forumone/example:pull_request".
+
+    Allowed workflows come from two places, which are combined:
+    - triggers: OIDC subject suffixes allowed for the `repository` (e.g. "forumone/example") of
+      every application that has environments in this cluster, e.g. "ref:refs/heads/main" or
+      "pull_request". Each becomes "repo:<repository>:<trigger>".
+    - subjects: full OIDC `sub` claims for anything else, e.g.
+      "repo:forumone/other:ref:refs/heads/main".
+    Subjects are matched exactly.
   EOT
 
   type = object({
     oidc_provider_arn = string
-    subjects          = list(string)
+    triggers          = optional(list(string), [])
+    subjects          = optional(list(string), [])
   })
 
   default = null
 
   validation {
-    condition = var.github_actions == null || try(
-      length(var.github_actions.subjects) > 0 &&
-      alltrue([for s in var.github_actions.subjects : startswith(s, "repo:")]),
-      false
-    )
-    error_message = "github_actions.subjects must be a non-empty list of full OIDC subjects starting with \"repo:\"."
+    condition = var.github_actions == null || alltrue([
+      for s in var.github_actions.subjects : startswith(s, "repo:")
+    ])
+    error_message = "github_actions.subjects must be full OIDC subjects starting with \"repo:\"."
   }
 }
 
@@ -203,6 +208,7 @@ variable "applications" {
 
   type = list(object({
     name           = string
+    repository     = optional(string)
     environments   = map(list(string))
     containers     = list(string)
     acmSubdomain   = optional(bool, false)

@@ -4,6 +4,17 @@
 # var.github_actions is set.
 
 locals {
+  # Subjects for the repository of each application with environments in this
+  # cluster, plus any explicitly given subjects
+  github_actions_subjects = var.github_actions == null ? [] : distinct(concat(
+    var.github_actions.subjects,
+    flatten([
+      for app in var.applications : [
+        for trigger in var.github_actions.triggers : "repo:${app.repository}:${trigger}"
+      ] if app.repository != null && contains(keys(app.environments), var.name)
+    ])
+  ))
+
   # Added to the builder and deployer roles' trust policies
   github_actions_principals = aws_iam_role.github_actions[*].arn
 }
@@ -32,13 +43,20 @@ data "aws_iam_policy_document" "github_actions_assume" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = var.github_actions.subjects
+      values   = local.github_actions_subjects
     }
   }
 }
 
 resource "aws_iam_role" "github_actions" {
   count = var.github_actions == null ? 0 : 1
+
+  lifecycle {
+    precondition {
+      condition     = length(local.github_actions_subjects) > 0
+      error_message = "github_actions allows no workflows: set triggers (with a repository on an application in this cluster) or subjects."
+    }
+  }
 
   name               = "${var.name}-GitHubActionsRole"
   description        = "GitHub Actions workflows building and deploying to the ${var.name} cluster"
