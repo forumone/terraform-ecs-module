@@ -152,6 +152,37 @@ variable "buildkite" {
   })
 }
 
+variable "github_actions" {
+  description = <<-EOT
+    GitHub Actions workflows allowed to build and deploy for this cluster. Creates a role they
+    can assume through the account's GitHub OIDC provider (oidc_provider_arn; there is one per
+    account, so create it outside this module), which the builder and deployer roles trust.
+
+    Allowed workflows come from two places, which are combined:
+    - triggers: OIDC subject suffixes allowed for the `repository` (e.g. "forumone/example") of
+      every application that has environments in this cluster, e.g. "ref:refs/heads/main" or
+      "pull_request". Each becomes "repo:<repository>:<trigger>".
+    - subjects: full OIDC `sub` claims for anything else, e.g.
+      "repo:forumone/other:ref:refs/heads/main".
+    Subjects are matched exactly.
+  EOT
+
+  type = object({
+    oidc_provider_arn = string
+    triggers          = optional(list(string), [])
+    subjects          = optional(list(string), [])
+  })
+
+  default = null
+
+  validation {
+    condition = var.github_actions == null || alltrue([
+      for s in var.github_actions.subjects : startswith(s, "repo:")
+    ])
+    error_message = "github_actions.subjects must be full OIDC subjects starting with \"repo:\"."
+  }
+}
+
 variable "backups" {
   description = "Options controlling backups behavior"
 
@@ -177,6 +208,7 @@ variable "applications" {
 
   type = list(object({
     name           = string
+    repository     = optional(string)
     environments   = map(list(string))
     containers     = list(string)
     acmSubdomain   = optional(bool, false)
