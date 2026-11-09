@@ -97,8 +97,10 @@
 | [aws_iam_role.ecs_default_exec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ecs_default_task](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.events_backups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.terraform_database_exec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.terraform_database_task](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.scheduled_task_cw_event_role_cloudwatch_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.automation_ec2_efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.automation_ec2_parameter_store](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -238,6 +240,8 @@
 | [aws_iam_policy_document.events_backups_ecs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.events_backups_pass_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.events_backups_write_dead_letters](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.github_actions_assume](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.opensearch_log_publish](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.parameter_store_read_only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.secrets_manager_read_only](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -261,6 +265,7 @@
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | Options controlling VPC creation | <pre>object({<br>    cidr     = string<br>    az_count = number<br>  })</pre> | n/a | yes |
 | <a name="input_acm"></a> [acm](#input\_acm) | Options controlling ACM customization | <pre>object({<br>    certificates = optional(list(string), [])<br>  })</pre> | `{}` | no |
 | <a name="input_backups"></a> [backups](#input\_backups) | Options controlling backups behavior | <pre>object({<br>    retention = optional(number, 30)<br>  })</pre> | `{}` | no |
+| <a name="input_github_actions"></a> [github\_actions](#input\_github\_actions) | GitHub Actions workflows allowed to build and deploy for this cluster. Creates a role they<br>can assume through the account's GitHub OIDC provider (oidc\_provider\_arn; there is one per<br>account, so create it outside this module), which the builder and deployer roles trust.<br>Subjects are full OIDC `sub` claims, matched exactly, e.g.<br>"repo:forumone/example:ref:refs/heads/main" or "repo:forumone/example:pull\_request". | <pre>object({<br>    oidc_provider_arn = string<br>    subjects          = list(string)<br>  })</pre> | `null` | no |
 | <a name="input_logs"></a> [logs](#input\_logs) | Options controlling CloudWatch and S3 logging behavior | <pre>object({<br>    retention = optional(number, 30)<br>  })</pre> | `{}` | no |
 | <a name="input_memcache"></a> [memcache](#input\_memcache) | Options controlling the Elasticache Memcache cluster | <pre>object({<br>    engine_version       = string<br>    node_type            = string<br>    num_cache_nodes      = number<br>    parameter_group_name = string<br>  })</pre> | `null` | no |
 | <a name="input_mysql"></a> [mysql](#input\_mysql) | Options controlling the Aurora MySQL cluster | <pre>object({<br>    engine_version      = string<br>    instance_type       = string<br>    replica_count       = number<br>    db_parameters       = optional(list(map(string)), [])<br>    db_parameter_family = string<br>  })</pre> | `null` | no |
@@ -284,6 +289,8 @@
 | <a name="output_cluster_arn"></a> [cluster\_arn](#output\_cluster\_arn) | ARN of the ECS cluster |
 | <a name="output_cluster_roles"></a> [cluster\_roles](#output\_cluster\_roles) | List of role ARNs associated with cluster tasks |
 | <a name="output_efs_security_group_id"></a> [efs\_security\_group\_id](#output\_efs\_security\_group\_id) | ID of the security group for the EFS |
+| <a name="output_github_actions_role"></a> [github\_actions\_role](#output\_github\_actions\_role) | ARN of the role for GitHub Actions to assume (null unless github\_actions is set) |
+| <a name="output_github_actions_role_name"></a> [github\_actions\_role\_name](#output\_github\_actions\_role\_name) | Name of the role for GitHub Actions to assume (null unless github\_actions is set) |
 | <a name="output_iam_role_arns"></a> [iam\_role\_arns](#output\_iam\_role\_arns) | Map of custom IAM role ARNs created for applications |
 | <a name="output_iam_role_names"></a> [iam\_role\_names](#output\_iam\_role\_names) | Map of custom IAM role names created for applications |
 | <a name="output_iam_user_arns"></a> [iam\_user\_arns](#output\_iam\_user\_arns) | Map of custom IAM user ARNs created for applications |

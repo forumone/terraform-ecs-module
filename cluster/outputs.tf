@@ -98,6 +98,16 @@ output "buildkite_deployer" {
   value       = aws_iam_role.buildkite_deployer.arn
 }
 
+output "github_actions_role" {
+  description = "ARN of the role for GitHub Actions to assume (null unless github_actions is set)"
+  value       = one(aws_iam_role.github_actions[*].arn)
+}
+
+output "github_actions_role_name" {
+  description = "Name of the role for GitHub Actions to assume (null unless github_actions is set)"
+  value       = one(aws_iam_role.github_actions[*].name)
+}
+
 output "ssm_read_policy" {
   description = "Name of the Systems Manager read-only policy"
   value       = aws_iam_policy.parameter_store_read_only.name
