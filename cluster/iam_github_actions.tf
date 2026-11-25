@@ -76,13 +76,14 @@ data "aws_iam_policy_document" "github_actions" {
     resources = [aws_iam_role.buildkite_builder.arn, aws_iam_role.buildkite_deployer.arn]
   }
 
-  # Logging in to ECR Public (e.g. to pull public base images without being
-  # rate limited) needs a bearer token; neither action supports resource-level
-  # permissions
+  # Registry logins happen with this role's own credentials, before the builder
+  # role is assumed (e.g. to pull base images without being rate limited). None
+  # of these actions support resource-level permissions.
   statement {
-    sid    = "ecrPublicLogin"
+    sid    = "ecrLogin"
     effect = "Allow"
     actions = [
+      "ecr:GetAuthorizationToken",
       "ecr-public:GetAuthorizationToken",
       "sts:GetServiceBearerToken",
     ]
