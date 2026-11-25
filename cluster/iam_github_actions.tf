@@ -59,6 +59,10 @@ resource "aws_iam_role" "github_actions" {
   description        = "GitHub Actions workflows building and deploying to the ${var.name} cluster"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume[0].json
 
+  # Workflows choose their own session length (role-duration-seconds), up to
+  # this; the default of one hour is too short for long image builds and deploys
+  max_session_duration = 43200
+
   tags = local.tags
 }
 
