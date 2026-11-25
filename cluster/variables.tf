@@ -156,7 +156,8 @@ variable "github_actions" {
   description = <<-EOT
     GitHub Actions workflows allowed to build and deploy for this cluster. Creates a role they
     can assume through the account's GitHub OIDC provider (oidc_provider_arn; there is one per
-    account, so create it outside this module), which the builder and deployer roles trust.
+    account, so create it outside this module). The role has the builder and deployer roles'
+    permissions directly, and does not assume them.
 
     Allowed workflows come from two places, which are combined:
     - triggers: OIDC subject suffixes allowed for the `repository` (e.g. "forumone/example") of

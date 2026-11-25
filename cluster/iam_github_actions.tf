@@ -1,7 +1,7 @@
 # GitHub Actions role: Lets the listed GitHub Actions workflows (through the
-# account's GitHub OIDC provider) assume this cluster's builder and deployer
-# roles, the same way Buildkite agents do. Only created when
-# var.github_actions is set.
+# account's GitHub OIDC provider) build, push, and deploy to this cluster using
+# the same permissions as the Buildkite builder and deployer roles, which they
+# do not assume. Only created when var.github_actions is set.
 
 locals {
   # Subjects for the repository of each application with environments in this
@@ -14,9 +14,6 @@ locals {
       ] if app.repository != null && contains(keys(app.environments), var.name)
     ])
   ))
-
-  # Added to the builder and deployer roles' trust policies
-  github_actions_principals = aws_iam_role.github_actions[*].arn
 }
 
 data "aws_iam_policy_document" "github_actions_assume" {
@@ -69,21 +66,13 @@ data "aws_iam_policy_document" "github_actions" {
   count   = var.github_actions == null ? 0 : 1
   version = "2012-10-17"
 
+  # Logging in to ECR Public (e.g. to pull public base images without being
+  # rate limited) happens with this role's own credentials. Neither action
+  # supports resource-level permissions.
   statement {
-    sid       = "assumeClusterRoles"
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = [aws_iam_role.buildkite_builder.arn, aws_iam_role.buildkite_deployer.arn]
-  }
-
-  # Registry logins happen with this role's own credentials, before the builder
-  # role is assumed (e.g. to pull base images without being rate limited). None
-  # of these actions support resource-level permissions.
-  statement {
-    sid    = "ecrLogin"
+    sid    = "ecrPublicLogin"
     effect = "Allow"
     actions = [
-      "ecr:GetAuthorizationToken",
       "ecr-public:GetAuthorizationToken",
       "sts:GetServiceBearerToken",
     ]
@@ -94,7 +83,23 @@ data "aws_iam_policy_document" "github_actions" {
 resource "aws_iam_role_policy" "github_actions" {
   count = var.github_actions == null ? 0 : 1
 
-  name   = "AssumeClusterRoles"
+  name   = "ECRPublicLogin"
   role   = aws_iam_role.github_actions[0].id
   policy = data.aws_iam_policy_document.github_actions[0].json
+}
+
+# Workflows build, push, and deploy with this role's own credentials, so it
+# gets the same access as the Buildkite builder and deployer roles
+resource "aws_iam_role_policy_attachment" "github_actions" {
+  for_each = var.github_actions == null ? {} : {
+    ecr_push             = aws_iam_policy.buildkite_ecr_push.arn
+    deploy_ecs           = aws_iam_policy.buildkite_deploy_ecs.arn
+    deploy_pass_roles    = aws_iam_policy.buildkite_deploy_pass_cron_role.arn
+    deployer_terraform   = aws_iam_policy.buildkite_deployer_terraform.arn
+    deployer_eventbridge = aws_iam_policy.buildkite_deployer_eventbridge.arn
+    automation_access    = aws_iam_policy.automation_access.arn
+  }
+
+  role       = aws_iam_role.github_actions[0].name
+  policy_arn = each.value
 }

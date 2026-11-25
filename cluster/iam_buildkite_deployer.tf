@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "buildkite_deployer_assume" {
 
     principals {
       type        = "AWS"
-      identifiers = concat(var.buildkite.deployers, local.github_actions_principals)
+      identifiers = var.buildkite.deployers
     }
   }
 }
